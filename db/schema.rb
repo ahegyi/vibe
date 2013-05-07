@@ -11,7 +11,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130507001914) do
+ActiveRecord::Schema.define(:version => 20130507023936) do
+
+  create_table "entities", :force => true do |t|
+    t.string   "type"
+    t.string   "source"
+    t.text     "external_url"
+    t.text     "media_url"
+    t.text     "caption"
+    t.integer  "displayability_rank"
+    t.integer  "interestingness"
+    t.integer  "radius_rank"
+    t.integer  "radius_distance"
+    t.text     "data"
+    t.integer  "query_id"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
 
   create_table "queries", :force => true do |t|
     t.string   "input"
