@@ -1,6 +1,6 @@
 function initialize() {
   var mapOptions = {
-      zoom: 8,
+      zoom: 12,
       center: new google.maps.LatLng(37.397, -122.644),
       mapTypeId: google.maps.MapTypeId.ROADMAP
       }
