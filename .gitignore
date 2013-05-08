@@ -17,3 +17,7 @@
 # Ignore secret API client keys
 
 .env
+
+# Ignore stupid files
+
+.DS_Store
