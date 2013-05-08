@@ -15,4 +15,6 @@ class Query < ActiveRecord::Base
 
   after_validation :geocode # auto-fetch coordinates
 
+  has_many :entities
+
 end
