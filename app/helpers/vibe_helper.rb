@@ -3,10 +3,11 @@ require 'uri'
 
 module VibeHelper
 
-  @fs_interestingness = 5
-  @meters_in_km = 1000
 
   def foursquare_ll(ll)
+    fs_interestingness = 5
+    meters_in_km = 1000
+
     client = Foursquare2::Client.new(:client_id => ENV['FOURSQUARE_CLIENT_ID'], :client_secret => ENV['FOURSQUARE_CLIENT_SECRET'], :api_version => '20130505')
     venues  = client.trending_venues(ll, {:limit => 10, :radius => 5000}).venues
     fs_entities = []
@@ -32,8 +33,11 @@ module VibeHelper
       puts entity.media_url
 
       entity.caption = venue['name']
-      entity.interestingness = @fs_interestingness
-      entity.radius_distance = (Geocoder::Calculations.distance_between(s_latlng, v_latlng) * @meters_in_km).round
+      entity.interestingness = fs_interestingness
+      entity.radius_distance = (Geocoder::Calculations.distance_between(s_latlng, v_latlng) * meters_in_km)
+      
+      puts entity.radius_distance
+      
       entity.data = [venue, photo]
       fs_entities << entity
     end
