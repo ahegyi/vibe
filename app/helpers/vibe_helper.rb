@@ -4,7 +4,7 @@ module VibeHelper
   meters_in_km = 1000
 
   def foursquare_ll(ll)
-    client = Foursquare2::Client.new(:client_id => ENV['FOURSQUARE_CLIENT_ID'], :client_secret => ENV['FOURSQUARE_SECRET_ID'], :api_version => '20130505')
+    client = Foursquare2::Client.new(:client_id => ENV['FOURSQUARE_CLIENT_ID'], :client_secret => ENV['FOURSQUARE_CLIENT_SECRET'], :api_version => '20130505')
     venues  = client.trending_venues(ll, {:limit => 10, :radius => 5000}).venues
     fs_entities = []
     s_latlng = ll.split(',').map{|i| i.to_f}
