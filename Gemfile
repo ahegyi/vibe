@@ -7,9 +7,11 @@ gem 'rails', '3.2.13'
 
 gem 'sqlite3'
 
+
 # gems specifically for Vibe
 
 gem 'geocoder'
+gem 'foursquare2'
 
 
 # Gems used only for assets and not required
