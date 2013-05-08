@@ -13,3 +13,11 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+# Ignore secret API client keys
+
+.env
+
+# Ignore stupid files
+
+.DS_Store
