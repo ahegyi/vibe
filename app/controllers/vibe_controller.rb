@@ -1,5 +1,7 @@
 class VibeController < ApplicationController
 
+  include VibeHelper
+
   def index
     @images = {}
 
@@ -12,22 +14,24 @@ class VibeController < ApplicationController
 
   def fs_trending
 
-    @client = Foursquare2::Client.new(:client_id => 'FUYVKTX2TB32OSSWQOE5LII32C35AGHEJUCTLMSBPV0RUGNV', :client_secret => 'MFPXAPUF1SCBVEBJKMYOBJPED0CLAN2XUSM1WXF5IVXOLTVR', :api_version => '20130505')
+    # @client = Foursquare2::Client.new(:client_id => 'FUYVKTX2TB32OSSWQOE5LII32C35AGHEJUCTLMSBPV0RUGNV', :client_secret => 'MFPXAPUF1SCBVEBJKMYOBJPED0CLAN2XUSM1WXF5IVXOLTVR', :api_version => '20130505')
 
     ll = "34.048961,-118.238952"
 
-    @trending_venues = @client.trending_venues(ll, {:limit => 2, :radius => 5000})
+    @foursquare_arr = foursquare_ll(ll)
 
-    @id = @trending_venues.venues[0]["id"]
+    # @trending_venues = @client.trending_venues(ll, {:limit => 2, :radius => 5000}).venues
+
+    # @id = @trending_venues[0]["id"]
 
     respond_to do |format|
       format.html # matt.html.erb
-      format.json { render json: @trending_venues }
+      format.json { render json: @foursquare_arr }
     end
 
   end
 
-    def fs_venue
+    def fs_top_photo
 
     @client = Foursquare2::Client.new(:client_id => "FUYVKTX2TB32OSSWQOE5LII32C35AGHEJUCTLMSBPV0RUGNV", :client_secret => 'MFPXAPUF1SCBVEBJKMYOBJPED0CLAN2XUSM1WXF5IVXOLTVR', :api_version => '20130505')
 
@@ -44,7 +48,7 @@ class VibeController < ApplicationController
 
     respond_to do |format|
       format.html # matt.html.erb
-      format.json { render json: @trending_venue }
+      format.json { render json: @image}
     end
 
   end

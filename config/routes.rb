@@ -2,7 +2,7 @@ Vibe::Application.routes.draw do
   root :to => 'vibe#index'
 
   get '/fs_trending', :to => 'vibe#fs_trending'
-  get '/fs_top_photo', :to => 'vibe#fs_venue'
+  get '/fs_top_photo', :to => 'vibe#fs_top_photo'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
