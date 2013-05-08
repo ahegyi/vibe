@@ -1,3 +1,12 @@
+/* Styles moved in from Sarah's index.html.erb head */
+
+  html { height: 100%; }
+  body { height: 100%; margin: 0; padding: 0; }
+  #map-canvas { height: 100%; }
+
+/* End styles moved in from Sarah's index.html.erb /head */
+
+
 #map-canvas {
   position: absolute;
   left: 0;
@@ -17,14 +26,14 @@
   width: 60%;
   border: 20px solid black;
   opacity: .9;
-  
+
   font-size: 70px;
   font-family: 'Belgrano', sans-serif;
   font-weight: 700;
-  
+
   margin: 200px auto 0 100px;
   padding: 2em 1.5em;
-  
+
   background: #FFFFE1;
   border-radius: 6px;
     -webkit-border-radius: 6px;
@@ -37,7 +46,7 @@
 
 #sideNav {
   font-family: 'Londrina Sketch', sans-serif;
-  font-size: 20px; 
+  font-size: 20px;
   color: white;
   padding: 20px;
   float: left;
@@ -46,7 +55,7 @@
   position: relative;
   height: 100%;
   width: 30%;
-  z-index: 0.9; 
+  z-index: 0.9;
 
 }
 
