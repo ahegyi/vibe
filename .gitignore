@@ -20,3 +20,6 @@
 
 # Ignore stupid files
 .DS_Store
+
+# We should ignore this file, probably
+Gemfile.lock
