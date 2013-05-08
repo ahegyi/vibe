@@ -5,13 +5,16 @@ gem 'rails', '3.2.13'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
-
-
 # gems specifically for Vibe
 
 gem 'geocoder'
 gem 'foursquare2'
+
+
+group :development do
+  gem 'sqlite3'
+  gem 'pry'
+end
 
 
 # Gems used only for assets and not required
