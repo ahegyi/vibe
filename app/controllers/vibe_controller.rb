@@ -20,10 +20,6 @@ class VibeController < ApplicationController
 
     @foursquare_arr = foursquare_ll(ll)
 
-    # @trending_venues = @client.trending_venues(ll, {:limit => 2, :radius => 5000}).venues
-
-    # @id = @trending_venues[0]["id"]
-
     respond_to do |format|
       format.html # matt.html.erb
       format.json { render json: @foursquare_arr }
