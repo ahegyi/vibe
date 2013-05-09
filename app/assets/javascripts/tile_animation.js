@@ -54,7 +54,7 @@
         { duration: getMovementSpeed(interestingness),
           easing:   'easeInOutSine',
           complete: function() {
-            $(this).hide('puff', {}, 500);
+            $(this).hide('puff', { percent: 100 }, 500);
           }
       });
     };
@@ -131,14 +131,13 @@ $(document).ready(function() {
     $.each(tiles, function(index, tile){
       tile.move();
     });
-    // tiles.animate({
-    //   'left': '-=' + 800 + 'px'
-    // },
-    // { duration: 5000,
-    //   easing:   'easeInOutSine',
-    //   complete: function() {
-    //     tiles.hide('puff', {}, 500);
-    //   }
-    // });
+
+  });
+
+  $('body').on('click', '.tile', function(event) {
+    $('.tile').stop();
+    $(this).flip({
+      direction: 'rl'
+    });
   });
 });
