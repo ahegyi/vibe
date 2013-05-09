@@ -35,7 +35,7 @@
     this.move = function(left) {
       this.left = left;
       this.tile.animate({
-        'left': '-=' + (this.left - 30) + 'px'
+        'left': '-=' + (this.left - 20) + 'px'
         },
         { duration: getMovementSpeed(interestingness),
           easing:   'easeInOutSine',
@@ -116,7 +116,7 @@ $(document).ready(function() {
   var startButton = $('.start').on('click', function() {
     $('.tile').show('scale');
     $.each(tiles, function(index, tile) {
-      tile.move(tile.currentLeft() - 30);
+      tile.move(tile.currentLeft());
     });
   });
 
