@@ -1,0 +1,9 @@
+<h1>Foursquare: Photos of Nearby Trending Venues</h1>
+<h2><%= @place %></h2>
+
+<ul>
+  <% @foursquare_arr.each do |entity| %>
+    <li>Venue: <%= entity.caption %></li>
+    <li><img src="<%= entity.media_url %>"></li>
+  <% end %>
+</ul>
