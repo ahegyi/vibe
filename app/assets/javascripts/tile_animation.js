@@ -40,7 +40,7 @@
         { duration: getMovementSpeed(interestingness),
           easing:   'easeInOutSine',
           complete: function() {
-            $(this).hide('puff', {}, 500);
+            $(this).hide('puff', { percent: 100 }, 500);
           }
       });
     };
