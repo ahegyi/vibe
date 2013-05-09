@@ -3,22 +3,14 @@
 <head>
   <title>Vibe</title>
   <meta charset="utf-8">
+<!--   Custom stuff from Sarah (index.html.erb) -->
+  <link href='http://fonts.googleapis.com/css?family=Londrina+Sketch' rel='stylesheet' type='
+    text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Belgrano' rel='stylesheet' type='text/css'>
+  <!-- End custom stuff from Sarah
 
-  <!-- Custom stuff from Sarah (index.html.erb) -->
-   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<%=ENV['GOOGLEMAPS_API_KEY'] %>&sensor=true"></script>
-   <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.2.1"></script>
-   <link href='stylesheets/indexpage.css.scss' type='text/css' rel='stylesheet'>
-    <link href='http://fonts.googleapis.com/css?family=Londrina+Sketch' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Belgrano' rel='stylesheet' type='text/css'>
-  <!-- End custom stuff from Sarah -->
-
-  <!-- Custom stuff from Rob (tile_animation.html.erb) -->
-  <link href="css/vader/jquery-ui-1.10.3.custom.css" rel="stylesheet">
-  <link href="css/style.css" rel="stylesheet">
-  <script src="js/jquery-1.9.1.js"></script>
-  <script src="js/jquery-ui-1.10.3.custom.js"></script>
-  <script src="js/animation.js"></script>
-  <!-- End custom stuff from Rob -->
+<!--   Custom stuff from Rob (tile_animation.html.erb) -->
+  <!-- End custom stuff from Rob --> -->
 
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
@@ -28,5 +20,7 @@
 
 <%= yield %>
 
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<%=ENV['GOOGLEMAPS_API_KEY'] %>&sensor=true"></script>
+   <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.2.1"></script>
 </body>
 </html>
