@@ -45,6 +45,7 @@ GEM
       multipart-post (~> 1.1)
     faraday_middleware (0.9.0)
       faraday (>= 0.7.4, < 0.9)
+    flickraw (0.9.6)
     foursquare2 (1.9.7)
       faraday (~> 0.8)
       faraday_middleware (>= 0.8)
@@ -128,6 +129,7 @@ PLATFORMS
 
 DEPENDENCIES
   coffee-rails (~> 3.2.1)
+  flickraw
   foursquare2
   geocoder
   instagram

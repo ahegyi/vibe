@@ -3,6 +3,7 @@ Vibe::Application.routes.draw do
 
   get '/foursquare', :to => 'vibe#foursquare'
   get '/instagram', :to => 'vibe#instagram_test'
+  get '/flickr', :to => 'vibe#flickr_test'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

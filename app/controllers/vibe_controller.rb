@@ -14,17 +14,16 @@ class VibeController < ApplicationController
 
   def foursquare
 
-    @place = "Austin, Tx"
+    @place = "Washington D.C."
 
-    ll = Geocoder.coordinates(@place).join(',')
+    coordinates = Geocoder.coordinates(@place)
 
-    @foursquare_arr = foursquare_ll(ll)
+    @foursquare_arr = foursquare_ll(coordinates[0], coordinates[1])
 
     respond_to do |format|
       format.html # matt.html.erb
       format.json { render json: @foursquare_arr }
     end
-
   end
 
   def instagram_test
@@ -41,4 +40,17 @@ class VibeController < ApplicationController
     end
   end
 
+  def flickr_test
+
+    @place = "Paris"
+
+    coordinates = Geocoder.coordinates(@place)
+   
+    @flickr_arr = flickr_ll(coordinates[0], coordinates[1])
+
+    respond_to do |format|
+      format.html # matt.html.erb
+      format.json { render json: @flickr_arr }
+    end
+  end
 end
