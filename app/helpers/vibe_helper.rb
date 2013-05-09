@@ -131,6 +131,7 @@ module VibeHelper
       entity.media_url = photo_obj.
     end
 
+
     return fk_photos
   end
 

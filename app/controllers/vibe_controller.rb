@@ -26,6 +26,7 @@ class VibeController < ApplicationController
     end
   end
 
+
   def instagram_test
     @place = "san francisco, ca"
 
