@@ -40,7 +40,7 @@
         { duration: getMovementSpeed(interestingness),
           easing:   'easeInOutSine',
           complete: function() {
-            $(this).hide('puff', { percent: 100 }, 500);
+            $(this).hide('puff', {}, 500);
           }
       });
     };
@@ -117,6 +117,7 @@ $(document).ready(function() {
     $('.tile').show('scale');
     $.each(tiles, function(index, tile) {
       tile.move(tile.currentLeft());
+
     });
   });
 
