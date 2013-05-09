@@ -1,0 +1,10 @@
+<h1>Instagram: Nearby Photos</h1>
+<h2><%= @place %></h2>
+
+<ul>
+  <% @instagram_entities.each do |entity| %>
+    <li>Caption: <%= entity.caption %></li>
+    <li>Interestingness: <%= entity.interestingness %></li>
+    <li><img src="<%= entity.media_url %>"></li>
+  <% end %>
+</ul>

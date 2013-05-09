@@ -27,4 +27,18 @@ class VibeController < ApplicationController
 
   end
 
+  def instagram_test
+    @place = "san francisco, ca"
+
+    ll = Geocoder.coordinates(@place)
+    @instagram_entities = instagram_ll(ll[0], ll[1])
+
+    @instagram_entities.sort!{|e| e.interestingness}
+
+    respond_to do |format|
+      format.html # instagram_test.html.erb
+      format.json { render json: @instagram_entities }
+    end
+  end
+
 end
