@@ -9,7 +9,7 @@ gem 'rails', '3.2.13'
 
 gem 'geocoder'
 gem 'foursquare2'
-
+gem 'instagram'
 
 group :development do
   gem 'sqlite3'
