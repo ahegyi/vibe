@@ -42,10 +42,17 @@ module VibeHelper
 
     # there are lots of issues with Instagram's media search, so let's try to catch them
     begin
-      images = Instagram.media_search(lat.to_s,long.to_s)
+
+      images = Instagram.media_search(
+                lat.to_s,long.to_s,
+                :distance => 5000, # largest radius possible
+                :min_timestamp => (Time.now.tv_sec - 5*3600)) # max age = 5 hours ago
+
     rescue Instagram::BadRequest => e
+
       puts e.message
       return entities
+
     end
 
     if !images.empty?
@@ -89,8 +96,8 @@ module VibeHelper
         # # TODO need to create posted_at column!
         # entity.posted_at = Time.at(image.created_time.to_i).to_datetime
 
-        # let's store the entire object as a json too!
-        entity.data = image.to_json
+        # let's store the entire object in here too!
+        entity.data = image
         entities << entity
       end
     end
