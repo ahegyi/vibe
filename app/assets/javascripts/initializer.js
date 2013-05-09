@@ -21,7 +21,7 @@ function initialize() {
 function loadScript() {
   var script = document.createElement("script");
   script.type = "text/javascript";
-  script.src = "http://maps.googleapis.com/maps/api/js?key=<%= GOOGLEMAPS_API_KEY %>&sensor=TRUE_OR_FALSE&callback=initialize";
+  script.src = "http://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLEMAPS_API_KEY'] %>&sensor=TRUE_OR_FALSE&callback=initialize";
   document.body.appendChild(script);
 }
 
