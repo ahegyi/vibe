@@ -11,45 +11,31 @@
     this.interestingness = interestingness;
     this.topValue = getTopValue(Math.floor(Math.random() * 5) + 1);
     this.leftValue = getStartLeftValue(Math.floor(Math.random() * 4) + 1);
+    tile.css({
+      "top": this.topValue + 'px',
+      "left": this.leftValue + 'px'
+    });
+    this.currentLeft = function(){return parseInt(tile.css('left'), 10);};
     switch(interestingness) {
       case 1:
         tile.addClass("small");
-        tile.css({
-          "top": this.topValue + 'px',
-          "left": this.leftValue + 'px'
-        });
         break;
       case 5:
         tile.addClass("medium");
-        tile.css({
-          "top": this.topValue + 'px',
-          "left": this.leftValue + 'px'
-        });
         break;
       case 50:
         tile.addClass("large");
-        tile.css({
-          "top": this.topValue + 'px',
-          "left": this.leftValue + 'px'
-        });
         break;
       case 100:
         tile.addClass("extra-large");
-        tile.css({
-          "top": this.topValue + 'px',
-          "left": this.leftValue + 'px'
-        });
         break;
       default:
         tile.addClass("medium");
-        tile.css({
-          "top": this.topValue + 'px',
-          "left": this.leftValue + 'px'
-        });
     }
-    this.move = function() {
+    this.move = function(left) {
+      this.left = left;
       this.tile.animate({
-        'left': '-=' + (this.leftValue - 30) + 'px'
+        'left': '-=' + (this.left - 20) + 'px'
         },
         { duration: getMovementSpeed(interestingness),
           easing:   'easeInOutSine',
@@ -58,6 +44,7 @@
           }
       });
     };
+
     body.append(tile);
   }
 
@@ -115,7 +102,7 @@ $(document).ready(function() {
 
   tiles.push(new Tile(1));
   tiles.push(new Tile(50));
-  tiles.push(new Tile(100));
+  tiles.push(new Tile(1));
   tiles.push(new Tile(5));
   tiles.push(new Tile(100));
   tiles.push(new Tile(5));
@@ -126,19 +113,24 @@ $(document).ready(function() {
 
   $('.tile').hide();
 
-  var startButton = $('.start').on('click', function(){
+  var startButton = $('.start').on('click', function() {
     $('.tile').show('scale');
-    $.each(tiles, function(index, tile){
-      tile.move();
+    $.each(tiles, function(index, tile) {
+      tile.move(tile.currentLeft());
     });
-    // tiles.animate({
-    //   'left': '-=' + 800 + 'px'
-    // },
-    // { duration: 5000,
-    //   easing:   'easeInOutSine',
-    //   complete: function() {
-    //     tiles.hide('puff', {}, 500);
-    //   }
-    // });
+  });
+
+  $('body').on('click', '.tile', function(event) {
+    $('body').unbind('click');
+    $('.tile').stop();
+    $(this).flip({
+      direction: 'rl'
+    });
+    $(this).on('click', function() {
+      $(this).revertFlip();
+      $.each(tiles, function(index, tile) {
+        tile.move(tile.currentLeft());
+      });
+    });
   });
 });
