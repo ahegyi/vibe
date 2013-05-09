@@ -11,6 +11,7 @@ gem 'geocoder'
 gem 'foursquare2'
 gem 'instagram'
 
+
 group :development do
   gem 'sqlite3'
   gem 'pry'
