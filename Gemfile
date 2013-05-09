@@ -14,7 +14,8 @@ gem 'flickraw'
 
 group :development do
   gem 'sqlite3'
-  gem 'pry'
+  gem 'pry-rails'
+  gem 'pry-debugger'
 end
 
 

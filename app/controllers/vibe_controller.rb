@@ -16,9 +16,9 @@ class VibeController < ApplicationController
 
     @place = "Washington D.C."
 
-    ll = Geocoder.coordinates(@place).join(',')
+    coordinates = Geocoder.coordinates(@place)
 
-    @foursquare_arr = foursquare_ll(ll)
+    @foursquare_arr = foursquare_ll(coordinates[0], coordinates[1])
 
     respond_to do |format|
       format.html # matt.html.erb
@@ -27,13 +27,13 @@ class VibeController < ApplicationController
 
   end
 
-  def flickr
+  def flickr_test
 
     @place = "Austin, Tx"
 
-    ll = Geocoder.coordinates(@place).join(',')
-
-    @flickr_arr = flickr_ll(ll)
+    coordinates = Geocoder.coordinates(@place)
+    # binding.pry
+    @flickr_arr = flickr_ll(coordinates[0], coordinates[1])
 
     respond_to do |format|
       format.html # matt.html.erb

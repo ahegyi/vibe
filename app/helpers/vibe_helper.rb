@@ -7,14 +7,15 @@ FlickRaw.shared_secret = ENV['FLICKR_SHARED_SECRET']
 
 module VibeHelper
 
-  def foursquare_ll(ll)
+# lat and long arguments should be floats
+  def foursquare_ll(lat, long)
     fs_interestingness = 5
-    meters_in_km = 1000
 
+    ll = [lat, long].join(",")
     client = Foursquare2::Client.new(:client_id => ENV['FOURSQUARE_CLIENT_ID'], :client_secret => ENV['FOURSQUARE_CLIENT_SECRET'], :api_version => '20130505')
     venues  = client.trending_venues(ll, {:limit => 10, :radius => 5000}).venues
     fs_entities = []
-    s_latlng = ll.split(',').map{|i| i.to_f}
+    s_latlng = [lat, long]
 
     venues.each do |venue|
       id = venue['id']
@@ -29,7 +30,7 @@ module VibeHelper
       entity.media_url = photo['prefix'] + photo_size + photo['suffix']
       entity.caption = venue['name']
       entity.interestingness = fs_interestingness
-      entity.radius_distance = (Geocoder::Calculations.distance_between(s_latlng, v_latlng) * meters_in_km)
+      entity.radius_distance = (Geocoder::Calculations.distance_between(s_latlng, v_latlng) * 1000)
       entity.data = [venue, photo]
       fs_entities << entity
     end
@@ -43,11 +44,15 @@ module VibeHelper
 
     radius = "32"
     radius_units = "km"
-    days
+    days_prior = 1
+    min_upload_date = Time.now.to_i - (days_prior * 8640)
+    per_page = 10
 
-    fk_photos = 
+    # flickr.photos.search(:lat => "37.77492909600045", :lon => "-122.41941943099971", :radius => "32", :radius_units => "km", :media => "photos", :sort => "interestingness-desc", :min_upload_date => "1367372819", :per_page => "5", :extras => "url_l")
+    # binding.pry
+    fk_photos = flickr.photos.search(:lat => lat.to_s, :lon => long.to_s, :radius => radius.to_s, :radius_units => radius_units, :media => "photos", :sort => "interestingness-desc", :min_upload_date => min_upload_date.to_s, :per_page => per_page.to_s, :extras => "url_l,url_sq")
 
-
+    return fk_photos
 
   end
 

@@ -2,7 +2,7 @@ Vibe::Application.routes.draw do
   root :to => 'vibe#index'
 
   get '/foursquare', :to => 'vibe#foursquare'
-  get '/flickr', :to => 'vibe#flickr'
+  get '/flickr', :to => 'vibe#flickr_test'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
