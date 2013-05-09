@@ -9,6 +9,7 @@ gem 'rails', '3.2.13'
 
 gem 'geocoder'
 gem 'foursquare2'
+gem 'flickraw'
 
 
 group :development do

@@ -1,9 +1,11 @@
 require 'open-uri'
 require 'uri'
+require 'flickraw'
+
+FlickRaw.api_key = ENV['FLICKR_API_KEY']
+FlickRaw.shared_secret = ENV['FLICKR_SHARED_SECRET']
 
 module VibeHelper
-
-# helper.foursquare_ll("34.048961,-118.238952")
 
   def foursquare_ll(ll)
     fs_interestingness = 5
@@ -17,6 +19,7 @@ module VibeHelper
     venues.each do |venue|
       id = venue['id']
       photo = client.venue_photos(id, {:limit => 1})["items"][0]
+      # binding.pry
       photo_size = photo['width'].to_s + "x" + photo['height'].to_s
       v_latlng = [venue['location']['lat'], venue['location']['lng']]
       entity = Entity.new
@@ -32,6 +35,20 @@ module VibeHelper
     end
 
     return fs_entities
+  end
+
+  def flickr_ll(lat, long)
+    fk_interestingness = 1
+    meters_in_km = 1000
+
+    radius = "32"
+    radius_units = "km"
+    days
+
+    fk_photos = 
+
+
+
   end
 
 
