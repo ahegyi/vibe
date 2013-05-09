@@ -1,18 +1,29 @@
+body {
+  margin: 0;
+}
+
 h2 {
-  color: white;
+  color: red;
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px;
   display: inline-block;
   margin-left: 40px;
   padding: 5px;
-  background-color: black;
+}
+
+img {
+  height: 100%;
+  border-radius: 10px;
 }
 
 .searchbar {
   background-color: black;
+  height: 40px;
+  padding: 5px;
 }
 
 .start {
-  height: 25px;
+  height: 20px;
   background-color: red;
   border-radius: 5px;
   text-align: center;
@@ -20,63 +31,52 @@ h2 {
 }
 
 .tile {
-  color: white;
+  position: absolute;
+  border-radius: 10px;
+  margin-top: 20px;
   font-weight: bold;
-  float: left;
   margin-right: 20px;
   margin-left: 20px;
-  border-radius: 10px;
+  opacity: 1;
+
 }
 
 .small {
-  height: 75px;
-  width: 100px;
+  height: 100px;
+  width: 150px;
   background-color: purple;
+  text-align: center;
+  z-index: 1;
 }
 
 .medium {
   height: 125px;
   width: 250px;
   background-color: orange;
+  text-align: center;
+  z-index: 2;
 }
 
 .large {
-  height: 200px;
-  width: 300px;
+  height: 175px;
+  width: 250px;
   background-color: green;
+  text-align: center;
+  z-index: 3;
 }
 
 .extra-large {
-  height: 200px;
-  width: 300px;
-  background-color: orange;
+  height: 350px;
+  width: 350px;
+  background-color: red;
+  text-align: center;
+  z-index: 4;
 }
 
 .tile-text {
-  vertical-align: middle;
+  position: absolute;
   text-align: center;
+  color: white;
+  width: 100%;
   font-family: Verdana, Arial, sans-serif;
-}
-
-.top-left{
-  left: 50px;
-  top: 50px;
-}
-
-.bottom-right {
-  margin-right: 200px;
-  margin-bottom: 50px;
-}
-
-.center-top {
-  top: 50px;
-  right: 500px;
-}
-
-img {
-  height: 100%;
-  border-radius: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  vertical-align: middle;
 }
