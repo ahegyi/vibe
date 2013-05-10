@@ -97,7 +97,7 @@ function getMovementSpeed(interestingness) {
   }
 }
 
-$(document).ready(function() {
+$(window ).load(function() {
   var locationBox = $('#searchbox');
   var searchComp = $('#searchcomponent');
   var nav = $('#sideNav');
