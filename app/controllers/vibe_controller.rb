@@ -22,9 +22,15 @@ class VibeController < ApplicationController
     query.geocode
 
     if !query.lat.nil? && !query.lng.nil?
-      @entities += foursquare_ll(query.lat, query.lng)
-      @entities += twitter_ll(query.lat, query.lng)
-      @entities += instagram_ll(query.lat, query.lng)
+      foursquare_thread = Thread.new{foursquare_ll(query.lat, query.lng)}
+      twitter_thread = Thread.new{twitter_ll(query.lat, query.lng)}
+      instagram_thread = Thread.new{instagram_ll(query.lat, query.lng)}
+      flickr_thread = Thread.new{flickr_ll(query.lat, query.lng)}
+
+      @entities += foursquare_thread.value
+      @entities += twitter_thread.value
+      @entities += instagram_thread.value
+      @entities += flickr_thread.value
     end
 
     # sort by interestingness descending
