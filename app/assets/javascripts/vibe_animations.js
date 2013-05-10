@@ -37,13 +37,14 @@ var minLeft = $(window).width() / 3;
 var maxLeft = $(window).width() - 500;
 
 //Prototype for tiles
-function Tile(interestingness) {
+function Tile(interestingness, leftStart) {
   var body = $('body');
   var tile = $('<div class="tile"></div>');
   this.tile = tile;
   this.interestingness = interestingness;
   this.topValue = getTopValue(Math.floor(Math.random() * 5) + 1);
-  this.leftValue = getStartLeftValue(Math.floor(Math.random() * 4) + 1);
+  this.leftValue = leftStart;
+  //this.leftValue = getStartLeftValue(Math.floor(Math.random() * 4) + 1);
   tile.css({
     "top": this.topValue + 'px',
     "left": this.leftValue + 'px'
@@ -71,13 +72,14 @@ function Tile(interestingness) {
       'left': '-=' + left + 'px'
       },
       { duration: getMovementSpeed(interestingness),
-        easing:   'easeInOutSine',
+        specialEasing: {
+          tileMove: '0,1.01,.56,.87'
+        },
         complete: function() {
           $(this).hide('puff', {percent: 125}, 500);
         }
     });
   };
-
   body.append(tile);
 }
 
@@ -135,17 +137,38 @@ $(window).ready(function() {
   var locationBox = $('#searchbox');
   var nav = $('#sideNav');
   var tiles = [];
+  var currentTileIndex = 0;
 
-  tiles.push(new Tile(1));
-  tiles.push(new Tile(50));
-  tiles.push(new Tile(1));
-  tiles.push(new Tile(5));
-  tiles.push(new Tile(100));
-  tiles.push(new Tile(5));
-  tiles.push(new Tile(1));
-  tiles.push(new Tile(50));
-  tiles.push(new Tile(5));
-  tiles.push(new Tile(5));
+  tiles.push(new Tile(1, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(50, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(1, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(5, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(100, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(5, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(1, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(50, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(5, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(5, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(1, ($(window).width + 10)));
+  tiles.push(new Tile(50, ($(window).width + 10)));
+  tiles.push(new Tile(1, ($(window).width + 10)));
+  tiles.push(new Tile(5, ($(window).width + 10)));
+  tiles.push(new Tile(100, ($(window).width + 10)));
+  tiles.push(new Tile(5, ($(window).width + 10)));
+  tiles.push(new Tile(1, ($(window).width + 10)));
+  tiles.push(new Tile(50, ($(window).width + 10)));
+  tiles.push(new Tile(5, ($(window).width + 10)));
+  tiles.push(new Tile(5, ($(window).width + 10)));
+  tiles.push(new Tile(1, ($(window).width + 10)));
+  tiles.push(new Tile(50, ($(window).width + 10)));
+  tiles.push(new Tile(1, ($(window).width + 10)));
+  tiles.push(new Tile(5, ($(window).width + 10)));
+  tiles.push(new Tile(100, ($(window).width + 10)));
+  tiles.push(new Tile(5, ($(window).width + 10)));
+  tiles.push(new Tile(1, ($(window).width + 10)));
+  tiles.push(new Tile(50, ($(window).width + 10)));
+  tiles.push(new Tile(5, ($(window).width + 10)));
+  tiles.push(new Tile(5, ($(window).width + 10)));
 
   $('.tile').hide();
 
@@ -164,11 +187,11 @@ $(window).ready(function() {
             success: function(data){
               initialize()
               console.log(data);
-              console.log(data.coordinates[0], data.coordinates[1])
+              console.log(data.coordinates[0], data.coordinates[1]);
               return(data);
             },
             error: function(){  
-              console.log('FAILED')
+              console.log('FAILED');
             }
           });
         }
@@ -203,11 +226,13 @@ $(window).ready(function() {
           sarah : "0,0,1,1"
         },
         complete: function(){
-          $('.tile').show('scale');
-            $.each(tiles, function(index, tile) {
-              tile.move(tile.leftValue);
-              console.log(tile.leftValue);
-            });
+          $.each(tiles, function(index, tile) {
+            if(index < 10) {
+              this.tile.show('scale');
+              tile.move(tile.leftValue + 100);
+            }
+          });
+            currentTileIndex += 10;
           }
         }
      );
@@ -227,6 +252,5 @@ $(window).ready(function() {
         $.each(tiles, function(index, tile) {
           tile.move(tile.currentLeft());
         });
-      });
     });
 });
