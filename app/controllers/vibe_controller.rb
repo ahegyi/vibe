@@ -29,7 +29,7 @@ class VibeController < ApplicationController
 
   def flickr_test
 
-    @place = "Austin, Tx"
+    @place = "Paris"
 
     coordinates = Geocoder.coordinates(@place)
     # binding.pry

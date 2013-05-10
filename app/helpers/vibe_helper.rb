@@ -41,16 +41,24 @@ module VibeHelper
   def flickr_ll(lat, long)
     fk_interestingness = 1
     meters_in_km = 1000
+    fk_entities = []
 
     radius = "32"
     radius_units = "km"
+    accuracy = 3 # Current range is 1-16 : World level is 1, Country is ~3, Region is ~6, City is ~11, Street is ~16
     days_prior = 1
-    min_upload_date = Time.now.to_i - (days_prior * 8640)
+    min_taken_date = Time.now.to_i - (days_prior * 8640)
     per_page = 10
 
-    # flickr.photos.search(:lat => "37.77492909600045", :lon => "-122.41941943099971", :radius => "32", :radius_units => "km", :media => "photos", :sort => "interestingness-desc", :min_upload_date => "1367372819", :per_page => "5", :extras => "url_l")
-    # binding.pry
-    fk_photos = flickr.photos.search(:lat => lat.to_s, :lon => long.to_s, :radius => radius.to_s, :radius_units => radius_units, :media => "photos", :sort => "interestingness-desc", :min_upload_date => min_upload_date.to_s, :per_page => per_page.to_s, :extras => "url_l,url_sq")
+    fk_photos = flickr.photos.search(:lat => lat.to_s, :lon => long.to_s, :radius => radius.to_s, :radius_units => radius_units, :accuracy => accuracy.to_s, :media => "photos", :sort => "interestingness-desc", :min_taken_date => min_taken_date.to_s, :per_page => per_page.to_s, :extras => "description, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_z")
+
+    fk_photos.each do |photo_obj|
+      entity = Entity.new
+      entity.type = "image"
+      entity.source = "Flickr"
+      entity.external_url = 
+      entity.media_url = photo_obj.
+    end
 
     return fk_photos
 
