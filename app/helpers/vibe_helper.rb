@@ -35,7 +35,7 @@ module VibeHelper
       entity.caption = venue['name']
       entity.interestingness = fs_interestingness
       entity.radius_distance = (Geocoder::Calculations.distance_between(source_latlng, venue_latlng) * 1000)
-      entity.data = [venue, photo]
+      entity.data = { "venue" => venue, "photo" => photo}
       fs_entities << entity
     end
 
