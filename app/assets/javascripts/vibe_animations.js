@@ -242,22 +242,28 @@ $(window).ready(function() {
     $('#map-canvas').css('opacity', '.5');
   });
     $('body').on('click', '.tile', function(event) {
-    $('body').unbind('click');
-    $('.tile').stop();
-    $(this).addClass('detail', 750);
-    // $(this).flip({
-    //   direction: 'rl',
-    //   content: '<p>Hello!</p>'
-    //   //onEnd: function() {
-        
-    //     //$(this).addClass('detail', 1000);
-    //   //}
-    // });
-    $(this).on('click', function() {
-      $(this).removeClass('detail', 500);
-      // $(this).revertFlip();
-      $.each(tiles, function(index, tile) {
-        tile.move(tile.currentLeft());
-      });
+      $('body').unbind('click');
+      $('.tile').stop();
+      $(this).addClass('detail', 750);
+      // $(this).animate({ 'left'    : '0',
+      //                   'top'     : '0',
+      //                   'height'  : '90%',
+      //                   'width'   : '90%',
+      //                   'opacity' : '0.5',
+      //                   'margin'  : '5%'});
+      // $(this).flip({
+      //   direction: 'rl',
+      //   content: '<p>Hello!</p>'
+      //   //onEnd: function() {
+      //     //$(this).addClass('detail', 1000);
+      //   //}
+      // });
+      $(this).on('click', function() {
+        //$(this).hide('puff', {percent: 125}, 500);
+        // $(this).revertFlip();
+        $(this).removeClass('detail', 750);
+        $.each(tiles, function(index, tile) {
+          tile.move(tile.currentLeft());
+        });
     });
 });
