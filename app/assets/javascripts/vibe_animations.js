@@ -255,15 +255,21 @@ $(document).ready(function() {
     //   direction: 'rl',
     //   content: '<p>Hello!</p>'
     //   //onEnd: function() {
+<<<<<<< HEAD
     //     //$(this).addClass('detail', 1000);
     //   //}
     });
+=======
+        
+    //     //$(this).addClass('detail', 1000);
+    //   //}
+    // });
+>>>>>>> Setting up queueing system to add additional tiles, temporarily removing flip animation.
     $(this).on('click', function() {
       $(this).removeClass('detail', 500);
       // $(this).revertFlip();
       $.each(tiles, function(index, tile) {
         tile.move(tile.currentLeft());
-        console.log(tile.currentLeft());
       });
 
       $('body').on('click', '.tile', function(event) {
