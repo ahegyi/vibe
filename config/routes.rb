@@ -5,6 +5,9 @@ Vibe::Application.routes.draw do
   get '/instagram', :to => 'vibe#instagram_test'
   get '/flickr', :to => 'vibe#flickr_test'
 
+  get '/entities', :to => 'vibe#entities_for_query'
+  get '/geocode', :to => 'vibe#geocode'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
