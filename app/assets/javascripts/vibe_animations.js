@@ -99,7 +99,6 @@ function getMovementSpeed(interestingness) {
 
 $(window).ready(function() {
   var locationBox = $('#searchbox');
-  var searchComp = $('#searchcomponent');
   var nav = $('#sideNav');
   var tiles = [];
 
@@ -118,6 +117,26 @@ $(window).ready(function() {
 
   //Search bar animation
   $('#go').on('click', function(){
+    $(this).initialize;
+      function sendLocation(){
+        var searchVal = $('#searchbox').val();
+        var query = JSON.stringify(searchVal);
+        alert(searchVal + "  " + query);
+        console.log('sendlocation is being executed')
+            $.ajax({
+            type: 'POST',
+            url: '/geocode',
+            data: {data: query},
+            dataType: 'json',
+            // timeout: 5000,
+            success: function(data){
+              console.log('post success');
+            },
+            error: function(){  
+              console.log('post fail')
+            }
+          });
+        }
     $(nav).animate({
           width : '100%',
           height : '45px',
@@ -148,13 +167,13 @@ $(window).ready(function() {
           sarah : "0,0,1,1"
         },
         complete: function(){
-           $('.tile').show('scale');
-              $.each(tiles, function(index, tile) {
-                tile.move(tile.leftValue);
-                console.log(tile.leftValue);
-            });
-          }
+          $('.tile').show('scale');
+          $.each(tiles, function(index, tile) {
+            tile.move(tile.leftValue);
+            console.log(tile.leftValue);
+          });
         }
+      }
     );
     locationBox.css('position', 'absolute');
     $('#go').addClass('hidden');
