@@ -36,12 +36,12 @@ function Tile(interestingness) {
   this.move = function(left) {
     this.left = left;
     this.tile.animate({
-      'left': '-=' + (this.left - 20) + 'px'
+      'left': '-=' + left + 'px'
       },
       { duration: getMovementSpeed(interestingness),
         easing:   'easeInOutSine',
         complete: function() {
-          $(this).hide('puff', {}, 500);
+          $(this).hide('puff', {percent: 125}, 500);
         }
     });
   };
@@ -97,7 +97,7 @@ function getMovementSpeed(interestingness) {
   }
 }
 
-$(window ).load(function() {
+$(window).load(function() {
   var locationBox = $('#searchbox');
   var searchComp = $('#searchcomponent');
   var nav = $('#sideNav');
