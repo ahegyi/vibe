@@ -18,6 +18,9 @@ module VibeHelper
     venues.each do |venue|
       id = venue['id']
       photo = client.venue_photos(id, {:limit => 1})["items"][0]
+
+      next if photo.nil? || photo.empty?
+
       photo_size = photo['width'].to_s + "x" + photo['height'].to_s
       venue_latlng = [venue['location']['lat'], venue['location']['lng']]
       entity = Entity.new
