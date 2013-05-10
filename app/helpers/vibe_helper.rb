@@ -25,7 +25,14 @@ module VibeHelper
       entity.source = "Foursquare"
       entity.posted_at = Time.at(photo['createdAt'].to_i)
       entity.username = ""
-      entity.real_name = photo['user']['firstName'] + " " + photo['user']['lastName']
+
+      first_name = photo['user']['firstName'].nil? ? "" : photo['user']['firstName']
+      last_name = photo['user']['lastName'].nil? ? "" : photo['user']['lastName']
+      if first_name.empty? && last_name.empty?
+        entity.real_name = ""
+      else
+        entity.real_name = (first_name + " " + last_name).strip
+      end
 
       entity.external_url = venue['canonicalUrl']
       entity.media_url = photo['prefix'] + photo_size + photo['suffix']
