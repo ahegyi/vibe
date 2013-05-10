@@ -10,11 +10,13 @@ gem 'rails', '3.2.13'
 gem 'geocoder'
 gem 'foursquare2'
 gem 'instagram'
+gem 'flickraw'
 
 
 group :development do
   gem 'sqlite3'
-  gem 'pry'
+  gem 'pry-rails'
+  gem 'pry-debugger'
 end
 
 
