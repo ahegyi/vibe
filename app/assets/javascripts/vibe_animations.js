@@ -150,7 +150,8 @@ $(window).ready(function() {
         complete: function(){
            $('.tile').show('scale');
               $.each(tiles, function(index, tile) {
-                tile.move(tile.currentLeft());
+                tile.move(tile.leftValue);
+                console.log(tile.leftValue);
             });
           }
         }
