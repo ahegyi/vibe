@@ -7,7 +7,7 @@ module VibeHelper
 
   # lat and long arguments should be floats
   def foursquare_ll(lat, long)
-    fs_interestingness = 5
+    fs_interestingness = 20..80
 
     ll = [lat, long].join(",")
     client = Foursquare2::Client.new(:client_id => ENV['FOURSQUARE_CLIENT_ID'], :client_secret => ENV['FOURSQUARE_CLIENT_SECRET'], :api_version => '20130505')
@@ -17,33 +17,40 @@ module VibeHelper
 
     venues.each do |venue|
       id = venue['id']
-      photo = client.venue_photos(id, {:limit => 1})["items"][0]
 
-      next if photo.nil? || photo.empty?
+      # get two most recent photos (group => venue returns public photos by recentness)
+      photos = client.venue_photos(id, {:limit => 2, :group => "venue"})["items"]
 
-      photo_size = photo['width'].to_s + "x" + photo['height'].to_s
-      venue_latlng = [venue['location']['lat'], venue['location']['lng']]
-      entity = Entity.new
-      entity.type = "image"
-      entity.source = "Foursquare"
-      entity.posted_at = Time.at(photo['createdAt'].to_i)
-      entity.username = ""
+      photos.each do |photo|
 
-      first_name = photo['user']['firstName'].nil? ? "" : photo['user']['firstName']
-      last_name = photo['user']['lastName'].nil? ? "" : photo['user']['lastName']
-      if first_name.empty? && last_name.empty?
-        entity.real_name = ""
-      else
-        entity.real_name = (first_name + " " + last_name).strip
+        next if photo.nil? || photo.empty?
+
+        photo_size = photo['width'].to_s + "x" + photo['height'].to_s
+        venue_latlng = [venue['location']['lat'], venue['location']['lng']]
+        entity = Entity.new
+        entity.type = "image"
+        entity.source = "Foursquare"
+        entity.posted_at = Time.at(photo['createdAt'].to_i)
+        entity.username = ""
+
+        first_name = photo['user']['firstName'].nil? ? "" : photo['user']['firstName']
+        last_name = photo['user']['lastName'].nil? ? "" : photo['user']['lastName']
+        if first_name.empty? && last_name.empty?
+          entity.real_name = ""
+        else
+          entity.real_name = (first_name + " " + last_name).strip
+        end
+
+        entity.external_url = venue['canonicalUrl']
+        entity.media_url = photo['prefix'] + photo_size + photo['suffix']
+        entity.caption = venue['name']
+        entity.interestingness = rand(fs_interestingness)
+        entity.radius_distance = (Geocoder::Calculations.distance_between(source_latlng, venue_latlng) * 1000)
+        entity.data = { "venue" => venue, "photo" => photo}
+
+        fs_entities << entity
       end
 
-      entity.external_url = venue['canonicalUrl']
-      entity.media_url = photo['prefix'] + photo_size + photo['suffix']
-      entity.caption = venue['name']
-      entity.interestingness = fs_interestingness
-      entity.radius_distance = (Geocoder::Calculations.distance_between(source_latlng, venue_latlng) * 1000)
-      entity.data = { "venue" => venue, "photo" => photo}
-      fs_entities << entity
     end
 
     return fs_entities
