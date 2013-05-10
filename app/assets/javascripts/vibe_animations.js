@@ -1,7 +1,7 @@
 // Google Maps Initializer, by Sarah
 
 var lat1 = 28.42;
-var long1 = 3.42;
+var longi = 3.42;
 
 // This initializes the map and lays layer
 //with lat and longi inserted as the center of the map (defined globally)
@@ -153,23 +153,24 @@ $(window).ready(function() {
   $('#go').on('click', function(){
       function sendLocation(){
         var searchVal = $('#searchbox').val();
-        var thisQuery = '{"query":' + JSON.stringify(searchVal) + '}'
-        alert(searchVal + "  " + thisQuery);
+        alert(searchVal);
         console.log('sendlocation is being executed')
             $.ajax({
             type: 'GET',
             url: '/geocode',
-            data: thisQuery,
+            data: { "query": searchVal },
             dataType: 'json',
             // timeout: 5000,
             success: function(data){
-              console.log('post success');
+              initialize()
+              console.log(data);
+              console.log(data.coordinates[0], data.coordinates[1])
+              return(data);
             },
             error: function(){  
-              console.log(thisQuery)
+              console.log('FAILED')
             }
           });
-            alert(thisQuery)
         }
         sendLocation();
     $(nav).animate({
