@@ -20,9 +20,14 @@ module VibeHelper
       photo = client.venue_photos(id, {:limit => 1})["items"][0]
       photo_size = photo['width'].to_s + "x" + photo['height'].to_s
       v_latlng = [venue['location']['lat'], venue['location']['lng']]
+
       entity = Entity.new
       entity.type = "image"
       entity.source = "Foursquare"
+      entity.posted_at = Time.at(photo['createdAt'].to_i)
+      entity.username = ""
+      entity.real_name = photo['user']['firstName'] + " " + photo['user']['lastName']
+
       entity.external_url = venue['canonicalUrl']
       entity.media_url = photo['prefix'] + photo_size + photo['suffix']
       entity.caption = venue['name']
@@ -70,6 +75,10 @@ module VibeHelper
         entity.external_url = image.link
         entity.media_url = image.images.standard_resolution.url
 
+        entity.posted_at = Time.at(image.created_time.to_i)
+        entity.username = image.user.username
+        entity.real_name = image.user.full_name
+
         # Build caption using the location name, if it exists,
         #   and then add the actual Instagram caption
         entity.caption = ""
@@ -94,8 +103,6 @@ module VibeHelper
 
         # # TODO set displayability_rank
         # entity.displayability_rank
-        # # TODO need to create posted_at column!
-        # entity.posted_at = Time.at(image.created_time.to_i).to_datetime
 
         # let's store the entire object in here too!
         entity.data = image
