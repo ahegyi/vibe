@@ -211,9 +211,28 @@ module VibeHelper
       entity = Entity.new
       entity.type = "image"
       entity.source = "Flickr"
-      entity.external_url = FlickRaw.url_profile(photo)
+      entity.external_url = "http://www.flickr.com/photos/" +
+                            photo["owner"] + "/" + photo["id"]
+
       entity.media_url = photo["url_z"]
-      entity.caption = photo["title"] + " - " + photo["description"]
+
+      # Build the caption like so:
+      # "Title" if description is blank
+      # "Description" if title is blank
+      # "Title - Description" if neither are blank
+      if !photo["title"].nil? && !photo["title"].empty?
+        entity.caption = photo["title"].strip
+      else
+        entity.caption = ""
+      end
+      if !photo["description"].nil? && !photo["description"].nil?
+        if entity.caption == ""
+          entity.caption += photo["description"]
+        else
+          entity.caption += " - " + photo["description"]
+        end
+      end
+
       entity.interestingness = interestingness_counter
       interestingness_counter -= interestingness_step
       entity.radius_distance = (Geocoder::Calculations.distance_between(source_latlng, photo_latlng) * 1000)
