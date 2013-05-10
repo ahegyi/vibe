@@ -1,5 +1,6 @@
 require 'open-uri'
 require 'uri'
+require 'time'
 
 module VibeHelper
 
@@ -104,6 +105,71 @@ module VibeHelper
 
     return entities
   end
+
+  # lat, long is a geo pair of the search coordinates
+  def twitter_ll(lat, long)
+    twitter_search_uri = "http://search.twitter.com/search.json?"
+    # default 5 kilometer radius
+    twitter_search_geo_string = URI.escape(lat.to_s + "," + long.to_s + "," + "5km")
+    # rpp => results per page
+    # include_entities will include media objects
+    # result_type 'mixed' includes recent and popular tweets
+    # see https://dev.twitter.com/docs/api/1/get/search for full description
+    twitter_search_options = "geocode=#{twitter_search_geo_string}&include_entities=true&result_type=mixed&rpp=100"
+
+    entities = []
+    meters_in_km = 1000
+
+    begin
+      result = open(twitter_search_uri + twitter_search_options)
+    rescue e
+      puts e.message
+      return entities
+    end
+
+    result_hash = JSON.load(result.read)
+
+    if result_hash.keys.include?("results") && result_hash["results"].length >= 1
+      tweets = result_hash["results"]
+      tweets.each do |tweet|
+        # sometimes, this is nil even though we specify a geo fence. wtf
+        next if tweet["geo"].nil?
+
+        entity = Entity.new
+
+        entity.source = "Twitter"
+        entity.posted_at = Time.parse(tweet["created_at"])
+        entity.username = tweet["from_user"]
+        entity.real_name = tweet["from_user_name"]
+
+        if tweet["entities"].keys.include?("media")
+          entity.type = "image"
+          entity.external_url = tweet["entities"]["media"].first["expanded_url"]
+          entity.media_url = tweet["entities"]["media"].first["media_url"]
+          # wild guess, for tweets with images
+          entity.interestingness = 20
+        else
+          entity.type = "text"
+          entity.external_url = "https://twitter.com/" + tweet["from_user"] + "/status/" + tweet["id_str"] + "/"
+          # wild guess, for tweets that are just text
+          entity.interestingness = 10
+        end
+
+        entity.caption = tweet["text"]
+
+        if tweet["geo"].keys.include?("coordinates")
+          entity.radius_distance = Geocoder::Calculations.distance_between([lat, long], tweet["geo"]["coordinates"]) * meters_in_km
+        end
+
+        entity.data = tweet
+        entities << entity
+      end
+    end
+
+    # don't return more than one tweet per user
+    return entities.uniq{|tweet| tweet.username}
+  end
+
 
   # Deprecated function, do not use! TODO remove this thing
   def get_point(input)
