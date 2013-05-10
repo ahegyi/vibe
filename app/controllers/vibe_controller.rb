@@ -28,7 +28,7 @@ class VibeController < ApplicationController
 
 
   def instagram_test
-    @place = "san francisco, ca"
+    @place = "San Francisco, CA"
 
     ll = Geocoder.coordinates(@place)
     @instagram_entities = instagram_ll(ll[0], ll[1])
@@ -43,7 +43,7 @@ class VibeController < ApplicationController
 
   def flickr_test
 
-    @place = "Paris"
+    @place = "San Francisco, CA"
 
     coordinates = Geocoder.coordinates(@place)
    
