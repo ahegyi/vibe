@@ -1,0 +1,9 @@
+<h1>Flickr: Photos Nearby</h1>
+<h2><%= @place %></h2>
+
+<ul>
+  <% @flickr_arr.each do |entity| %>
+    <li>Caption: <%= entity.caption %></li>
+    <li><img src="<%= entity.media_url %>"></li>
+  <% end %>
+</ul>
