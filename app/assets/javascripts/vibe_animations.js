@@ -137,6 +137,7 @@ function getMovementSpeed(interestingness) {
 
 
 $(document).ready(function() {
+
   var locationBox = $('#searchbox');
   var nav = $('#sideNav');
   var tiles = [];
@@ -299,4 +300,6 @@ $(document).ready(function() {
       });
     });
   });
+
 });
+

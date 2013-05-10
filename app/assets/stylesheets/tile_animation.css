@@ -74,18 +74,13 @@ h2 {
 }
 
 .detail {
-<<<<<<< HEAD
-<<<<<<< HEAD
   height: 80%;
   width: 80%;
   position: absolute;
   top: 0;
   left: 0;
   margin: 5%;
-=======
-  height: 80%;
-  width: 80%;
->>>>>>> Setting up queueing system to add additional tiles, temporarily removing flip animation.
+  position: absolute;
   z-index: 10;
   top: 10px;
   left: 10px;
