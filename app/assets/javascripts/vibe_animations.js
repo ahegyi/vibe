@@ -137,10 +137,6 @@ function getMovementSpeed(interestingness) {
 
 
 $(document).ready(function() {
-<<<<<<< HEAD
-
-=======
->>>>>>> Working on queue.
   var locationBox = $('#searchbox');
   var nav = $('#sideNav');
   var tiles = [];
@@ -203,14 +199,15 @@ $(document).ready(function() {
             url: '/geocode',
             data: { "query": searchVal },
             dataType: 'json',
-            success:function(data){
-             latitude = data.coordinates[0],
-             longitude = data.coordinates[1],
-             console.log(latitude, longitude);
-             Map();
+            // timeout: 5000,
+            success: function(data){
+              initialize()
+              console.log(data);
+              console.log(data.coordinates[0], data.coordinates[1]);
+              return(data);
             },
-            error:function(textStatus){
-              alert('you have an error');
+            error: function(){  
+              console.log('FAILED');
             }
           });
         }
@@ -253,6 +250,8 @@ $(document).ready(function() {
               tile.move(tile.leftValue + 100);
             }
           });
+            currentTileIndex += 10;
+
           }
         }
     );
@@ -263,13 +262,10 @@ $(document).ready(function() {
     $('#map-canvas').css('opacity', '.5');
   });
 
-<<<<<<< HEAD
-=======
     // window.setInterval(function(){
     //   launchNextTile(currentTileIndex);
     // }, 2000);
 
->>>>>>> Working on queue.
     $('body').on('click', '.tile', function(event) {
     $('body').unbind('click');
     $('.tile').stop();
@@ -278,16 +274,10 @@ $(document).ready(function() {
     //   direction: 'rl',
     //   content: '<p>Hello!</p>'
     //   //onEnd: function() {
-<<<<<<< HEAD
-    //     //$(this).addClass('detail', 1000);
-    //   //}
-    });
-=======
-        
     //     //$(this).addClass('detail', 1000);
     //   //}
     // });
->>>>>>> Setting up queueing system to add additional tiles, temporarily removing flip animation.
+
     $(this).on('click', function() {
       $(this).removeClass('detail', 500);
       // $(this).revertFlip();
@@ -306,15 +296,7 @@ $(document).ready(function() {
         $(this).revertFlip();
         $.each(tiles, function(index, tile) {
           tile.move(tile.currentLeft());
-<<<<<<< HEAD
-        });
-      });
-    });
- });
- });
-=======
       });
     });
   });
 });
->>>>>>> Working on queue.
