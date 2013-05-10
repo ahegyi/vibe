@@ -258,5 +258,6 @@ $(window).ready(function() {
       // $(this).revertFlip();
       $.each(tiles, function(index, tile) {
         tile.move(tile.currentLeft());
+      });
     });
 });
