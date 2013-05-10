@@ -1,7 +1,7 @@
 // Google Maps Initializer, by Sarah
 
-var lat1 = 28.42;
-var longi = 3.42;
+var defaultLatitude = 28.42;
+var defaultLongitude = 3.42;
 
 // This initializes the map and lays layer
 //with lat and longi inserted as the center of the map (defined globally)
@@ -9,7 +9,7 @@ var longi = 3.42;
 function initialize() {
   var layer = "toner";
   var map = new google.maps.Map(document.getElementById("map-canvas"), {
-    center: new google.maps.LatLng(parseFloat(lat1), parseFloat(long1)),
+    center: new google.maps.LatLng(parseFloat(defaultLatitude), parseFloat(defaultLongitude)),
     zoom: 5,
     mapTypeId: layer,
     mapTypeControlOptions: {
