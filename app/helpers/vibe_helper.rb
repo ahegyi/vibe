@@ -3,9 +3,6 @@ require 'uri'
 require 'time'
 require 'flickraw'
 
-FlickRaw.api_key = ENV['FLICKR_API_KEY']
-FlickRaw.shared_secret = ENV['FLICKR_SHARED_SECRET']
-
 module VibeHelper
 
   # lat and long arguments should be floats
@@ -28,7 +25,14 @@ module VibeHelper
       entity.source = "Foursquare"
       entity.posted_at = Time.at(photo['createdAt'].to_i)
       entity.username = ""
-      entity.real_name = photo['user']['firstName'] + " " + photo['user']['lastName']
+
+      first_name = photo['user']['firstName'].nil? ? "" : photo['user']['firstName']
+      last_name = photo['user']['lastName'].nil? ? "" : photo['user']['lastName']
+      if first_name.empty? && last_name.empty?
+        entity.real_name = ""
+      else
+        entity.real_name = (first_name + " " + last_name).strip
+      end
 
       entity.external_url = venue['canonicalUrl']
       entity.media_url = photo['prefix'] + photo_size + photo['suffix']
@@ -192,11 +196,11 @@ module VibeHelper
     min_taken_date = Time.now.to_i - (days_prior * 8640)
     per_page = 10
 
-    fk_photos = flickr.photos.search(:lat => lat.to_s, :lon => long.to_s, :radius => radius.to_s, 
-                                      :radius_units => radius_units, :accuracy => accuracy.to_s, 
-                                      :media => "photos", :sort => "interestingness-desc", 
-                                      :min_taken_date => min_taken_date.to_s, :max_taken_date => Time.now.to_i, 
-                                      :per_page => per_page.to_s, :extras => "description, date_upload, date_taken, 
+    fk_photos = flickr.photos.search(:lat => lat.to_s, :lon => long.to_s, :radius => radius.to_s,
+                                      :radius_units => radius_units, :accuracy => accuracy.to_s,
+                                      :media => "photos", :sort => "interestingness-desc",
+                                      :min_taken_date => min_taken_date.to_s, :max_taken_date => Time.now.to_i,
+                                      :per_page => per_page.to_s, :extras => "description, date_upload, date_taken,
                                       owner_name, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_z")
 
     interestingness_counter = 80
