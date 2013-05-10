@@ -1,4 +1,36 @@
-//Constraints for row/column placement of tiles.
+// Google Maps Initializer, by Sarah
+
+var lat1 = 28.42;
+var long1 = 3.42;
+
+// This initializes the map and lays layer
+//with lat and longi inserted as the center of the map (defined globally)
+
+function initialize() {
+  var layer = "toner";
+  var map = new google.maps.Map(document.getElementById("map-canvas"), {
+    center: new google.maps.LatLng(parseFloat(lat1), parseFloat(long1)),
+    zoom: 5,
+    mapTypeId: layer,
+    mapTypeControlOptions: {
+        mapTypeIds: [layer]
+    }
+  });
+  map.mapTypes.set(layer, new google.maps.StamenMapType(layer));
+}
+
+//this loads the map by creating the element "script" from google maps api
+//thus appending the "script" child to the body 
+
+function loadScript() {
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src = "http://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLEMAPS_API_KEY'] %>&sensor=true&callback=initialize";
+  document.body.appendChild(script);
+}
+
+window.onload = loadScript;
+
 var minTop = 30;
 var maxTop = $(window).height() - 300;
 var minLeft = $(window).width() / 3;
@@ -97,7 +129,9 @@ function getMovementSpeed(interestingness) {
   }
 }
 
+
 $(window).ready(function() {
+
   var locationBox = $('#searchbox');
   var nav = $('#sideNav');
   var tiles = [];
@@ -117,26 +151,27 @@ $(window).ready(function() {
 
   //Search bar animation
   $('#go').on('click', function(){
-    $(this).initialize;
       function sendLocation(){
         var searchVal = $('#searchbox').val();
-        var query = JSON.stringify(searchVal);
-        alert(searchVal + "  " + query);
+        var thisQuery = '{"query":' + JSON.stringify(searchVal) + '}'
+        alert(searchVal + "  " + thisQuery);
         console.log('sendlocation is being executed')
             $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: '/geocode',
-            data: {data: query},
+            data: thisQuery,
             dataType: 'json',
             // timeout: 5000,
             success: function(data){
               console.log('post success');
             },
             error: function(){  
-              console.log('post fail')
+              console.log(thisQuery)
             }
           });
+            alert(thisQuery)
         }
+        sendLocation();
     $(nav).animate({
           width : '100%',
           height : '45px',
@@ -168,30 +203,29 @@ $(window).ready(function() {
         },
         complete: function(){
           $('.tile').show('scale');
-          $.each(tiles, function(index, tile) {
-            tile.move(tile.leftValue);
-            console.log(tile.leftValue);
-          });
+            $.each(tiles, function(index, tile) {
+              tile.move(tile.leftValue);
+              console.log(tile.leftValue);
+            });
+          }
         }
-      }
-    );
-    locationBox.css('position', 'absolute');
-    $('#go').addClass('hidden');
-    nav.css('textAlign', 'left');
-    $('#map-canvas').css('opacity', '.5');
-  });
-    $('body').on('click', '.tile', function(event) {
-    $('body').unbind('click');
-    $('.tile').stop();
-    $(this).flip({
-      direction: 'rl'
+     );
+      locationBox.css('position', 'absolute');
+      $('#go').addClass('hidden');
+      nav.css('textAlign', 'left');
+      $('#map-canvas').css('opacity', '.5');
     });
-    $(this).on('click', function() {
-      $(this).revertFlip();
-      $.each(tiles, function(index, tile) {
-        tile.move(tile.currentLeft());
+      $('body').on('click', '.tile', function(event) {
+      $('body').unbind('click');
+      $('.tile').stop();
+      $(this).flip({
+        direction: 'rl'
+      });
+      $(this).on('click', function() {
+        $(this).revertFlip();
+        $.each(tiles, function(index, tile) {
+          tile.move(tile.currentLeft());
+        });
       });
     });
-  });
-
 });
