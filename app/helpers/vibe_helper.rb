@@ -124,14 +124,14 @@ module VibeHelper
 
   # lat, long is a geo pair of the search coordinates
   def twitter_ll(lat, long)
-    twitter_search_uri = "http://search.twitter.com/search.json?"
+    twitter_search_uri = "http://search.twitter.com/search.json"
     # default 5 kilometer radius
     twitter_search_geo_string = URI.escape(lat.to_s + "," + long.to_s + "," + "5km")
     # rpp => results per page
     # include_entities will include media objects
     # result_type 'mixed' includes recent and popular tweets
     # see https://dev.twitter.com/docs/api/1/get/search for full description
-    twitter_search_options = "geocode=#{twitter_search_geo_string}&include_entities=true&result_type=mixed&rpp=100"
+    twitter_search_options = "?geocode=#{twitter_search_geo_string}&include_entities=true&result_type=mixed&rpp=100"
 
     entities = []
     meters_in_km = 1000
@@ -147,6 +147,36 @@ module VibeHelper
 
     if result_hash.keys.include?("results") && result_hash["results"].length >= 1
       tweets = result_hash["results"]
+
+      new_max_id = tweets.map{|t| t['id']}.min - 1
+
+      tweets.select! do |tweet|
+        tweet["entities"].keys.include?("media") && !tweet['geo'].nil? && tweet['geo']['coordinates'] != [0,0]
+      end
+
+      max_attempts = 10
+      request_count = 0
+
+      # 'page' through results, keep going until we get
+      # 10 properly geocoded photo tweets OR we've
+      # reached max_attempts
+      while tweets.count < 10 && request_count < max_attempts
+        new_tweets = []
+        request_count += 1
+        result = open(twitter_search_uri + twitter_search_options + "&max_id=" + new_max_id.to_s)
+        result_hash = JSON.load(result.read)
+        if result_hash.keys.include?("results") && result_hash["results"].length >= 1
+          new_tweets = result_hash["results"]
+
+          new_max_id = new_tweets.map{|t| t['id']}.min - 1
+
+          new_tweets.select! do |tweet|
+            tweet["entities"].keys.include?("media") && !tweet['geo'].nil? && tweet['geo']['coordinates'] != [0,0]
+          end
+        end
+        tweets += new_tweets
+      end
+
       tweets.each do |tweet|
         # sometimes, this is nil even though we specify a geo fence. wtf
         next if tweet["geo"].nil?
@@ -163,7 +193,7 @@ module VibeHelper
           entity.external_url = tweet["entities"]["media"].first["expanded_url"]
           entity.media_url = tweet["entities"]["media"].first["media_url"]
           # wild guess, for tweets with images
-          entity.interestingness = 20
+          entity.interestingness = rand(20..50)
         else
           entity.type = "text"
           entity.external_url = "https://twitter.com/" + tweet["from_user"] + "/status/" + tweet["id_str"] + "/"
