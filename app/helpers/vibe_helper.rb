@@ -236,8 +236,10 @@ module VibeHelper
                                       :per_page => per_page.to_s, :extras => "description, date_upload, date_taken,
                                       owner_name, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_z")
 
-    interestingness_counter = 80
-    interestingness_step = interestingness_counter/fk_photos.size
+    if fk_photos.size > 0
+      interestingness_counter = 80
+      interestingness_step = interestingness_counter/fk_photos.size
+    end
 
     fk_photos.each do |photo|
       photo_latlng = [photo["latitude"], photo["longitude"]]
@@ -258,7 +260,7 @@ module VibeHelper
       else
         entity.caption = ""
       end
-      if !photo["description"].nil? && !photo["description"].nil?
+      if !photo["description"].nil? && !photo["description"].empty?
         if entity.caption == ""
           entity.caption += photo["description"]
         else
