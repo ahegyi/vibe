@@ -122,13 +122,13 @@ function getStartLeftValue(columnNum) {
 
 function getMovementSpeed(interestingness) {
   if(interestingness === 1) {
-    return Math.floor((Math.random() * (3500 - 2500)) + 2500);
-  }
-  else if(interestingness === 2) {
     return Math.floor((Math.random() * (4000 - 3000)) + 3000);
   }
+  else if(interestingness === 2) {
+    return Math.floor((Math.random() * (4500 - 4000)) + 4000);
+  }
   else if(interestingness === 3) {
-    return Math.floor((Math.random() * (5000 - 3500)) + 3500);
+    return Math.floor((Math.random() * (5000 - 4500)) + 4500);
   }
   else {
     return Math.floor((Math.random() * (6000 - 4750)) + 4750);
@@ -137,11 +137,14 @@ function getMovementSpeed(interestingness) {
 
 
 $(document).ready(function() {
+<<<<<<< HEAD
 
+=======
+>>>>>>> Working on queue.
   var locationBox = $('#searchbox');
   var nav = $('#sideNav');
   var tiles = [];
-  var currentTileIndex = 0;
+  var currentTileIndex = 10;
 
   tiles.push(new Tile(1, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
   tiles.push(new Tile(50, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
@@ -153,7 +156,7 @@ $(document).ready(function() {
   tiles.push(new Tile(50, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
   tiles.push(new Tile(5, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
   tiles.push(new Tile(5, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(1, ($(window).width + 10)));
+  tiles.push(new Tile(1, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
   tiles.push(new Tile(50, ($(window).width + 10)));
   tiles.push(new Tile(1, ($(window).width + 10)));
   tiles.push(new Tile(5, ($(window).width + 10)));
@@ -173,6 +176,19 @@ $(document).ready(function() {
   tiles.push(new Tile(50, ($(window).width + 10)));
   tiles.push(new Tile(5, ($(window).width + 10)));
   tiles.push(new Tile(5, ($(window).width + 10)));
+
+  function launchNextTile(index) {
+    console.log('hello');
+    var tile = tiles[index];
+    this.tile.move(($(window).width + 10));
+    if(currentTileIndex === tiles.length) {
+      _.shuffle(tiles);
+      currentTileIndex = 0;
+    }
+    else {
+      currentTileIndex += 1;
+    }
+  }
 
   $('.tile').hide();
 
@@ -237,16 +253,23 @@ $(document).ready(function() {
               tile.move(tile.leftValue + 100);
             }
           });
-            currentTileIndex += 10;
           }
         }
     );
+
     locationBox.css('position', 'absolute');
     $('#go').addClass('hidden');
     nav.css('textAlign', 'left');
     $('#map-canvas').css('opacity', '.5');
   });
 
+<<<<<<< HEAD
+=======
+    // window.setInterval(function(){
+    //   launchNextTile(currentTileIndex);
+    // }, 2000);
+
+>>>>>>> Working on queue.
     $('body').on('click', '.tile', function(event) {
     $('body').unbind('click');
     $('.tile').stop();
@@ -283,8 +306,15 @@ $(document).ready(function() {
         $(this).revertFlip();
         $.each(tiles, function(index, tile) {
           tile.move(tile.currentLeft());
+<<<<<<< HEAD
         });
       });
     });
  });
  });
+=======
+      });
+    });
+  });
+});
+>>>>>>> Working on queue.

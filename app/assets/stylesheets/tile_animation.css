@@ -74,8 +74,13 @@ h2 {
 }
 
 .detail {
+<<<<<<< HEAD
   height: 80%;
   width: 80%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 5%;
   z-index: 10;
   top: 10px;
   left: 10px;
