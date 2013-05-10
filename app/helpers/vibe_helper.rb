@@ -3,9 +3,6 @@ require 'uri'
 require 'time'
 require 'flickraw'
 
-FlickRaw.api_key = ENV['FLICKR_API_KEY']
-FlickRaw.shared_secret = ENV['FLICKR_SHARED_SECRET']
-
 module VibeHelper
 
   # lat and long arguments should be floats
@@ -192,11 +189,11 @@ module VibeHelper
     min_taken_date = Time.now.to_i - (days_prior * 8640)
     per_page = 10
 
-    fk_photos = flickr.photos.search(:lat => lat.to_s, :lon => long.to_s, :radius => radius.to_s, 
-                                      :radius_units => radius_units, :accuracy => accuracy.to_s, 
-                                      :media => "photos", :sort => "interestingness-desc", 
-                                      :min_taken_date => min_taken_date.to_s, :max_taken_date => Time.now.to_i, 
-                                      :per_page => per_page.to_s, :extras => "description, date_upload, date_taken, 
+    fk_photos = flickr.photos.search(:lat => lat.to_s, :lon => long.to_s, :radius => radius.to_s,
+                                      :radius_units => radius_units, :accuracy => accuracy.to_s,
+                                      :media => "photos", :sort => "interestingness-desc",
+                                      :min_taken_date => min_taken_date.to_s, :max_taken_date => Time.now.to_i,
+                                      :per_page => per_page.to_s, :extras => "description, date_upload, date_taken,
                                       owner_name, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_z")
 
     interestingness_counter = 80
