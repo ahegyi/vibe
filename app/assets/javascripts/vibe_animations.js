@@ -189,14 +189,20 @@ $(window).ready(function() {
     $('body').on('click', '.tile', function(event) {
     $('body').unbind('click');
     $('.tile').stop();
-    $(this).flip({
-      direction: 'rl'
-    });
+    $(this).addClass('detail', 750);
+    // $(this).flip({
+    //   direction: 'rl',
+    //   content: '<p>Hello!</p>'
+    //   //onEnd: function() {
+        
+    //     //$(this).addClass('detail', 1000);
+    //   //}
+    // });
     $(this).on('click', function() {
-      $(this).revertFlip();
+      $(this).removeClass('detail', 500);
+      // $(this).revertFlip();
       $.each(tiles, function(index, tile) {
         tile.move(tile.currentLeft());
-        console.log(tile.currentLeft());
       });
     });
   });
