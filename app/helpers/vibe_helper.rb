@@ -7,7 +7,7 @@ module VibeHelper
 
   # lat and long arguments should be floats
   def foursquare_ll(lat, long)
-    fs_interestingness = 5
+    fs_interestingness = 20..80
 
     ll = [lat, long].join(",")
     client = Foursquare2::Client.new(:client_id => ENV['FOURSQUARE_CLIENT_ID'], :client_secret => ENV['FOURSQUARE_CLIENT_SECRET'], :api_version => '20130505')
@@ -17,30 +17,40 @@ module VibeHelper
 
     venues.each do |venue|
       id = venue['id']
-      photo = client.venue_photos(id, {:limit => 1})["items"][0]
-      photo_size = photo['width'].to_s + "x" + photo['height'].to_s
-      venue_latlng = [venue['location']['lat'], venue['location']['lng']]
-      entity = Entity.new
-      entity.type = "image"
-      entity.source = "Foursquare"
-      entity.posted_at = Time.at(photo['createdAt'].to_i)
-      entity.username = ""
 
-      first_name = photo['user']['firstName'].nil? ? "" : photo['user']['firstName']
-      last_name = photo['user']['lastName'].nil? ? "" : photo['user']['lastName']
-      if first_name.empty? && last_name.empty?
-        entity.real_name = ""
-      else
-        entity.real_name = (first_name + " " + last_name).strip
+      # get two most recent photos (group => venue returns public photos by recentness)
+      photos = client.venue_photos(id, {:limit => 2, :group => "venue"})["items"]
+
+      photos.each do |photo|
+
+        next if photo.nil? || photo.empty?
+
+        photo_size = photo['width'].to_s + "x" + photo['height'].to_s
+        venue_latlng = [venue['location']['lat'], venue['location']['lng']]
+        entity = Entity.new
+        entity.type = "image"
+        entity.source = "Foursquare"
+        entity.posted_at = Time.at(photo['createdAt'].to_i)
+        entity.username = ""
+
+        first_name = photo['user']['firstName'].nil? ? "" : photo['user']['firstName']
+        last_name = photo['user']['lastName'].nil? ? "" : photo['user']['lastName']
+        if first_name.empty? && last_name.empty?
+          entity.real_name = ""
+        else
+          entity.real_name = (first_name + " " + last_name).strip
+        end
+
+        entity.external_url = venue['canonicalUrl']
+        entity.media_url = photo['prefix'] + photo_size + photo['suffix']
+        entity.caption = venue['name']
+        entity.interestingness = rand(fs_interestingness)
+        entity.radius_distance = (Geocoder::Calculations.distance_between(source_latlng, venue_latlng) * 1000)
+        entity.data = { "venue" => venue, "photo" => photo}
+
+        fs_entities << entity
       end
 
-      entity.external_url = venue['canonicalUrl']
-      entity.media_url = photo['prefix'] + photo_size + photo['suffix']
-      entity.caption = venue['name']
-      entity.interestingness = fs_interestingness
-      entity.radius_distance = (Geocoder::Calculations.distance_between(source_latlng, venue_latlng) * 1000)
-      entity.data = { "venue" => venue, "photo" => photo}
-      fs_entities << entity
     end
 
     return fs_entities
@@ -121,14 +131,14 @@ module VibeHelper
 
   # lat, long is a geo pair of the search coordinates
   def twitter_ll(lat, long)
-    twitter_search_uri = "http://search.twitter.com/search.json?"
+    twitter_search_uri = "http://search.twitter.com/search.json"
     # default 5 kilometer radius
     twitter_search_geo_string = URI.escape(lat.to_s + "," + long.to_s + "," + "5km")
     # rpp => results per page
     # include_entities will include media objects
     # result_type 'mixed' includes recent and popular tweets
     # see https://dev.twitter.com/docs/api/1/get/search for full description
-    twitter_search_options = "geocode=#{twitter_search_geo_string}&include_entities=true&result_type=mixed&rpp=100"
+    twitter_search_options = "?geocode=#{twitter_search_geo_string}&include_entities=true&result_type=mixed&rpp=100"
 
     entities = []
     meters_in_km = 1000
@@ -144,6 +154,36 @@ module VibeHelper
 
     if result_hash.keys.include?("results") && result_hash["results"].length >= 1
       tweets = result_hash["results"]
+
+      new_max_id = tweets.map{|t| t['id']}.min - 1
+
+      tweets.select! do |tweet|
+        tweet["entities"].keys.include?("media") && !tweet['geo'].nil? && tweet['geo']['coordinates'] != [0,0]
+      end
+
+      max_attempts = 10
+      request_count = 0
+
+      # 'page' through results, keep going until we get
+      # 10 properly geocoded photo tweets OR we've
+      # reached max_attempts
+      while tweets.count < 10 && request_count < max_attempts
+        new_tweets = []
+        request_count += 1
+        result = open(twitter_search_uri + twitter_search_options + "&max_id=" + new_max_id.to_s)
+        result_hash = JSON.load(result.read)
+        if result_hash.keys.include?("results") && result_hash["results"].length >= 1
+          new_tweets = result_hash["results"]
+
+          new_max_id = new_tweets.map{|t| t['id']}.min - 1
+
+          new_tweets.select! do |tweet|
+            tweet["entities"].keys.include?("media") && !tweet['geo'].nil? && tweet['geo']['coordinates'] != [0,0]
+          end
+        end
+        tweets += new_tweets
+      end
+
       tweets.each do |tweet|
         # sometimes, this is nil even though we specify a geo fence. wtf
         next if tweet["geo"].nil?
@@ -160,7 +200,7 @@ module VibeHelper
           entity.external_url = tweet["entities"]["media"].first["expanded_url"]
           entity.media_url = tweet["entities"]["media"].first["media_url"]
           # wild guess, for tweets with images
-          entity.interestingness = 20
+          entity.interestingness = rand(20..50)
         else
           entity.type = "text"
           entity.external_url = "https://twitter.com/" + tweet["from_user"] + "/status/" + tweet["id_str"] + "/"
@@ -203,17 +243,38 @@ module VibeHelper
                                       :per_page => per_page.to_s, :extras => "description, date_upload, date_taken,
                                       owner_name, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_z")
 
-    interestingness_counter = 80
-    interestingness_step = interestingness_counter/fk_photos.size
+    if fk_photos.size > 0
+      interestingness_counter = 80
+      interestingness_step = interestingness_counter/fk_photos.size
+    end
 
     fk_photos.each do |photo|
       photo_latlng = [photo["latitude"], photo["longitude"]]
       entity = Entity.new
       entity.type = "image"
       entity.source = "Flickr"
-      entity.external_url = FlickRaw.url_profile(photo)
+      entity.external_url = "http://www.flickr.com/photos/" +
+                            photo["owner"] + "/" + photo["id"]
+
       entity.media_url = photo["url_z"]
-      entity.caption = photo["title"] + " - " + photo["description"]
+
+      # Build the caption like so:
+      # "Title" if description is blank
+      # "Description" if title is blank
+      # "Title - Description" if neither are blank
+      if !photo["title"].nil? && !photo["title"].empty?
+        entity.caption = photo["title"].strip
+      else
+        entity.caption = ""
+      end
+      if !photo["description"].nil? && !photo["description"].empty?
+        if entity.caption == ""
+          entity.caption += photo["description"]
+        else
+          entity.caption += " - " + photo["description"]
+        end
+      end
+
       entity.interestingness = interestingness_counter
       interestingness_counter -= interestingness_step
       entity.radius_distance = (Geocoder::Calculations.distance_between(source_latlng, photo_latlng) * 1000)
