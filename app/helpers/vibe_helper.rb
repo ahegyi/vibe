@@ -33,16 +33,13 @@ module VibeHelper
       entity.radius_distance = (Geocoder::Calculations.distance_between(source_latlng, venue_latlng) * 1000)
       entity.data = [venue, photo]
 
-      # entity.username = 
-      # entity.real_name = 
-      # entity.posted_at = 
-
       fs_entities << entity
     end
 
     return fs_entities
   end
 
+<<<<<<< HEAD
   # lat, long is a geo pair of the search coordinates
   def instagram_ll(lat, long)
     meters_in_km = 1000
