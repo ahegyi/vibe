@@ -215,12 +215,28 @@ $(document).ready(function() {
             });
           }
         }
-     );
-
-      locationBox.css('position', 'absolute');
-      $('#go').addClass('hidden');
-      nav.css('textAlign', 'left');
-      $('#map-canvas').css('opacity', '.5');
+    );
+    locationBox.css('position', 'absolute');
+    $('#go').addClass('hidden');
+    nav.css('textAlign', 'left');
+    $('#map-canvas').css('opacity', '.5');
+  });
+    $('body').on('click', '.tile', function(event) {
+    $('body').unbind('click');
+    $('.tile').stop();
+    $(this).addClass('detail', 750);
+    // $(this).flip({
+    //   direction: 'rl',
+    //   content: '<p>Hello!</p>'
+    //   //onEnd: function() {
+    //     //$(this).addClass('detail', 1000);
+    //   //}
+    // });
+    $(this).on('click', function() {
+      $(this).removeClass('detail', 500);
+      // $(this).revertFlip();
+      $.each(tiles, function(index, tile) {
+        tile.move(tile.currentLeft());
       });
 
       $('body').on('click', '.tile', function(event) {
