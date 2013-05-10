@@ -151,6 +151,37 @@ $(document).ready(function() {
     }
   }
 
+  tiles.push(new Tile(1, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(50, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(1, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(5, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(100, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(5, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(1, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(50, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(5, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(5, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  tiles.push(new Tile(1, ($(window).width + 10)));
+  tiles.push(new Tile(50, ($(window).width + 10)));
+  tiles.push(new Tile(1, ($(window).width + 10)));
+  tiles.push(new Tile(5, ($(window).width + 10)));
+  tiles.push(new Tile(100, ($(window).width + 10)));
+  tiles.push(new Tile(5, ($(window).width + 10)));
+  tiles.push(new Tile(1, ($(window).width + 10)));
+  tiles.push(new Tile(50, ($(window).width + 10)));
+  tiles.push(new Tile(5, ($(window).width + 10)));
+  tiles.push(new Tile(5, ($(window).width + 10)));
+  tiles.push(new Tile(1, ($(window).width + 10)));
+  tiles.push(new Tile(50, ($(window).width + 10)));
+  tiles.push(new Tile(1, ($(window).width + 10)));
+  tiles.push(new Tile(5, ($(window).width + 10)));
+  tiles.push(new Tile(100, ($(window).width + 10)));
+  tiles.push(new Tile(5, ($(window).width + 10)));
+  tiles.push(new Tile(1, ($(window).width + 10)));
+  tiles.push(new Tile(50, ($(window).width + 10)));
+  tiles.push(new Tile(5, ($(window).width + 10)));
+  tiles.push(new Tile(5, ($(window).width + 10)));
+
   $('.tile').hide();
 
   //Search bar animation
@@ -192,6 +223,7 @@ $(document).ready(function() {
               tile.move(tile.leftValue + 100);
             }
           });
+            currentTileIndex += 10;
           }
         }
     );
