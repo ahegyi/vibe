@@ -135,6 +135,8 @@ function getMovementSpeed(interestingness) {
   }
 }
 
+var next;
+
 $(document).ready(function() {
 
   var locationBox = $('#searchbox');
@@ -201,12 +203,11 @@ $(document).ready(function() {
             url: '/geocode',
             data: { "query": searchVal },
             dataType: 'json',
-            // timeout: 5000,
-            success: function(data){
-              initialize()
-              console.log(data);
-              console.log(data.coordinates[0], data.coordinates[1]);
-              return(data);
+            success:function(data){
+             latitude = data.coordinates[0],
+             longitude = data.coordinates[1],
+             console.log(latitude, longitude);
+             Map();
             },
             error: function(){  
               console.log('FAILED');
@@ -254,7 +255,6 @@ $(document).ready(function() {
             }
           });
             currentTileIndex += 10;
-
           }
         }
     );
@@ -300,12 +300,13 @@ $(document).ready(function() {
       });
 
       $(this).on('click', function() {
-        $(this).revertFlip();
+        //$(this).hide('puff', {percent: 125}, 500);
+        // $(this).revertFlip();
+        $(this).removeClass('detail', 750);
         $.each(tiles, function(index, tile) {
           tile.move(tile.currentLeft());
       });
     });
   });
-
 });
 
