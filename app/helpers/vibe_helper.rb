@@ -10,7 +10,17 @@ module VibeHelper
     fs_interestingness = 20..80
 
     ll = [lat, long].join(",")
-    client = Foursquare2::Client.new(:client_id => ENV['FOURSQUARE_CLIENT_ID'], :client_secret => ENV['FOURSQUARE_CLIENT_SECRET'], :api_version => '20130505')
+
+    client_options = {
+      :client_id     => ENV['FOURSQUARE_CLIENT_ID'],
+      :client_secret => ENV['FOURSQUARE_CLIENT_SECRET'],
+      :api_version   => '20130505',
+    }
+
+    client_options.merge!(:ssl => {:verify  => OpenSSL::SSL::VERIFY_PEER, :ca_file => ENV['SSL_CERT']}) if ENV['SSL_CERT']
+
+    client = Foursquare2::Client.new(client_options)
+
     venues  = client.trending_venues(ll, {:limit => 10, :radius => 5000}).venues
     fs_entities = []
     source_latlng = [lat, long]
