@@ -206,7 +206,7 @@ $(document).ready(function() {
             success:function(data){
              latitude = data.coordinates[0],
              longitude = data.coordinates[1],
-             console.log(latitude, longitude)
+             console.log(latitude, longitude);
              Map();
             },
             error:function(textStatus){
