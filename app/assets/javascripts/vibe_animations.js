@@ -1,36 +1,37 @@
 // Google Maps Initializer, by Sarah
 function defaultMap(){
-    var defaultLatitude = 37.77492909600045;
-    var defaultLongitude = -122.41941943099971;
-    var center = new google.maps.LatLng(parseFloat(defaultLatitude), parseFloat(defaultLongitude));
-    var layer = "toner";
-    var mapOptions = {
-        center: center,
-        zoom: 5,
-        mapTypeId: layer,
-        mapTypeControlOptions: {
-          mapTypeIds: [layer]
-        }
-    };
-    var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-    map.mapTypes.set(layer, new google.maps.StamenMapType(layer));
-  }
+  var defaultLatitude = 37.77492909600045;
+  var defaultLongitude = -122.41941943099971;
+  var center = new google.maps.LatLng(parseFloat(defaultLatitude), parseFloat(defaultLongitude));
+  var layer = "toner";
+  var mapOptions = {
+      center: center,
+      zoom: 5,
+      mapTypeId: layer,
+      mapTypeControlOptions: {
+        mapTypeIds: [layer]
+      }
+  };
+  var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+  map.mapTypes.set(layer, new google.maps.StamenMapType(layer));
+}
 
 var latitude;
 var longitude;
+
 function Map(){
-    var center = new google.maps.LatLng(parseFloat(latitude), parseFloat(longitude));
-    var layer = "toner";
-    var mapOptions = {
-        center: center,
-        zoom: 10,
-        mapTypeId: layer,
-        mapTypeControlOptions: {
-          mapTypeIds: [layer]
-        }
-    };
-    var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-    map.mapTypes.set(layer, new google.maps.StamenMapType(layer));
+  var center = new google.maps.LatLng(parseFloat(latitude), parseFloat(longitude));
+  var layer = "toner";
+  var mapOptions = {
+      center: center,
+      zoom: 10,
+      mapTypeId: layer,
+      mapTypeControlOptions: {
+        mapTypeIds: [layer]
+      }
+  };
+  var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+  map.mapTypes.set(layer, new google.maps.StamenMapType(layer));
   }
 
 window.onload = defaultMap;
@@ -84,6 +85,7 @@ function Tile(interestingness, leftStart) {
         }
     });
   };
+
   body.append(tile);
 }
 
@@ -176,7 +178,6 @@ $(document).ready(function() {
   tiles.push(new Tile(5, $(window).width()));
 
   next = function launchNextTile(index) {
-    console.log('hello');
     var tile = tiles[index];
     tile.tile.show();
     tile.move(($(window).width() + 10));
@@ -209,7 +210,7 @@ $(document).ready(function() {
              console.log(latitude, longitude);
              Map();
             },
-            error: function(){  
+            error: function(){
               console.log('FAILED');
             }
           });
@@ -217,22 +218,21 @@ $(document).ready(function() {
       sendLocation();
 
     $(nav).animate({
-          width : '100%',
-          height : '45px',
-          fontSize : '50px',
-          marginTop : '-24px',
-          marginLeft : '0',
-          paddingLeft : '70px',
-          paddingBottom : '20px',
-          borderRadius : '',
-          zIndex: '1'
-        }, {
-          duration: 1750,
-          specialEasing: {
-            sarah : ".71,.01,.4,.99"
-        }
+        width : '100%',
+        height : '45px',
+        fontSize : '50px',
+        marginTop : '-24px',
+        marginLeft : '0',
+        paddingLeft : '70px',
+        paddingBottom : '20px',
+        borderRadius : '',
+        zIndex: '1'
+      }, {
+        duration: 1750,
+        specialEasing: {
+          sarah : ".71,.01,.4,.99"
       }
-    );
+    });
 
     $(locationBox).animate({
           height: '40px',
@@ -274,39 +274,22 @@ $(document).ready(function() {
     // }, 2000);
 
     $('body').on('click', '.tile', function(event) {
-    $('body').unbind('click');
-    $('.tile').stop();
-    $(this).addClass('detail', 750);
-    // $(this).flip({
-    //   direction: 'rl',
-    //   content: '<p>Hello!</p>'
-    //   //onEnd: function() {
-    //     //$(this).addClass('detail', 1000);
-    //   //}
-    // });
+      $('body').unbind('click');
+      $('.tile').stop();
+      $(this).addClass('detail', 750);
+      // $(this).flip({
+      //   direction: 'rl',
+      //   content: '<p>Hello!</p>'
+      //   //onEnd: function() {
+      //     //$(this).addClass('detail', 1000);
+      //   //}
+    });
 
     $(this).on('click', function() {
       $(this).removeClass('detail', 500);
       // $(this).revertFlip();
       $.each(tiles, function(index, tile) {
         tile.move(tile.currentLeft());
-      });
-
-      $('body').on('click', '.tile', function(event) {
-      $('body').unbind('click');
-      $('.tile').stop();
-      $(this).flip({
-        direction: 'rl'
-      });
-
-      $(this).on('click', function() {
-        //$(this).hide('puff', {percent: 125}, 500);
-        // $(this).revertFlip();
-        $(this).removeClass('detail', 750);
-        $.each(tiles, function(index, tile) {
-          tile.move(tile.currentLeft());
-      });
     });
   });
 });
-
