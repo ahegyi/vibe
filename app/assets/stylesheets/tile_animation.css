@@ -33,10 +33,7 @@ h2 {
 .tile {
   position: absolute;
   border-radius: 10px;
-  margin-top: 20px;
   font-weight: bold;
-  margin-right: 20px;
-  margin-left: 20px;
   opacity: 1;
 
 }
@@ -66,11 +63,24 @@ h2 {
 }
 
 .extra-large {
-  height: 350px;
+  height: 250px;
   width: 350px;
   background-color: red;
   text-align: center;
   z-index: 4;
+}
+
+.detail {
+  height: 80%;
+  width: 80%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 5%;
+  position: absolute;
+  z-index: 10;
+  top: 10px;
+  left: 10px;
 }
 
 .tile-text {
