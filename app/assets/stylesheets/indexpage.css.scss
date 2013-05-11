@@ -23,34 +23,27 @@ body {
   height: 100%;
 }
 
-/*#searchcomponent {
-  z-index: 1;
-}*/
 
 #searchbox {
   position: relative;
   height: 50px;
   width: 50%;
   border: 5px solid black;
-/*  opacity: .9;*/
   background-color: white;
   float: top;
   
   margin-left: 475px;
-  /*margin-top: 100px;  */
   font-size: 20px;
   font-family: Blue Highway, sans-serif;
   font-weight: 700;
   letter-spacing: .1em;
-  /*background: #FFFFE1;*/
   border-radius: 6px;
 
   text-shadow: 0 1px 0 #fff;
   line-height: 1.5;
 }
 
-#text > #searchbox {
-  
+#search > #searchbox {
 }
 
 input {
@@ -62,17 +55,13 @@ input {
   width: 20%;
   margin-top: 35px;
   margin-left: 75px;
-/*  float: left;*/
 
   padding: 20px;
   border-radius: 5px;
   background-color: black;
- /* box-shadow: -3px -3px #F2E29E;*/
-/* text-shadow: 5px 3px #91D9D9;*/
   letter-spacing: .2em;
   font-size: 100px;
   font-family: Kenyan Coffee, sans-serif;
-  /*font-weight: bold;*/
   text-align: center;
   color: #347373;
 

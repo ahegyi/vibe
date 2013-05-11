@@ -1,35 +1,46 @@
 // Google Maps Initializer, by Sarah
-
-var defaultLatitude = 28.42;
-var defaultLongitude = 3.42;
-
-// This initializes the map and lays layer
-//with lat and longi inserted as the center of the map (defined globally)
-
-function initialize() {
+function defaultMap(){
+  var defaultLatitude = 37.77492909600045;
+  var defaultLongitude = -122.41941943099971;
+  var center = new google.maps.LatLng(parseFloat(defaultLatitude), parseFloat(defaultLongitude));
   var layer = "toner";
-  var map = new google.maps.Map(document.getElementById("map-canvas"), {
-    center: new google.maps.LatLng(parseFloat(defaultLatitude), parseFloat(defaultLongitude)),
-    zoom: 5,
-    mapTypeId: layer,
-    mapTypeControlOptions: {
+  var mapOptions = {
+      center: center,
+      zoom: 5,
+      mapTypeId: layer,
+      mapTypeControlOptions: {
         mapTypeIds: [layer]
-    }
-  });
+      }
+  };
+  var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
   map.mapTypes.set(layer, new google.maps.StamenMapType(layer));
 }
 
-//this loads the map by creating the element "script" from google maps api
-//thus appending the "script" child to the body 
 
-function loadScript() {
-  var script = document.createElement("script");
-  script.type = "text/javascript";
-  script.src = "http://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLEMAPS_API_KEY'] %>&sensor=true&callback=initialize";
-  document.body.appendChild(script);
+var latitude;
+var longitude;
+function Map(){
+  var center = new google.maps.LatLng(parseFloat(latitude), parseFloat(longitude));
+  var layer = "toner";
+  var mapOptions = {
+      center: center,
+      zoom: 5,
+      mapTypeId: layer,
+      mapTypeControlOptions: {
+        mapTypeIds: [layer]
+      }
+  };
+  var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+  map.mapTypes.set(layer, new google.maps.StamenMapType(layer));
 }
+// function loadScript() {
+//   var script = document.createElement("script");
+//   script.type = "text/javascript";
+//   script.src = "http://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLEMAPS_API_KEY'] %>&sensor=true&callback=initialize";
+//   document.body.appendChild(script);
+// }
 
-window.onload = loadScript;
+ window.onload = defaultMap;
 
 var minTop = 30;
 var maxTop = $(window).height() - 300;
@@ -130,7 +141,7 @@ function getMovementSpeed(interestingness) {
 }
 
 
-$(window).ready(function() {
+$(document).ready(function() {
 
   var locationBox = $('#searchbox');
   var nav = $('#sideNav');
@@ -150,11 +161,10 @@ $(window).ready(function() {
   $('.tile').hide();
 
   //Search bar animation
-  $('#go').on('click', function(){
+  $('#search').on('submit', function(){
+      
       function sendLocation(){
         var searchVal = $('#searchbox').val();
-        alert(searchVal);
-        console.log('sendlocation is being executed')
             $.ajax({
             type: 'GET',
             url: '/geocode',
@@ -162,17 +172,15 @@ $(window).ready(function() {
             dataType: 'json',
             // timeout: 5000,
             success: function(data){
-              initialize()
-              console.log(data);
               console.log(data.coordinates[0], data.coordinates[1])
-              return(data);
-            },
-            error: function(){  
-              console.log('FAILED')
+             latitude = data.coordinates[0],
+             longitude = data.coordinates[1],
+             Map();
             }
           });
         }
-        sendLocation();
+      sendLocation();
+    
     $(nav).animate({
           width : '100%',
           height : '45px',
@@ -190,6 +198,7 @@ $(window).ready(function() {
         }
       }
     );
+
     $(locationBox).animate({
           height: '40px',
           fontSize : '15px',
@@ -216,17 +225,18 @@ $(window).ready(function() {
       nav.css('textAlign', 'left');
       $('#map-canvas').css('opacity', '.5');
     });
-      $('body').on('click', '.tile', function(event) {
-      $('body').unbind('click');
-      $('.tile').stop();
-      $(this).flip({
-        direction: 'rl'
-      });
-      $(this).on('click', function() {
-        $(this).revertFlip();
-        $.each(tiles, function(index, tile) {
-          tile.move(tile.currentLeft());
-        });
+
+    $('body').on('click', '.tile', function(event) {
+    $('body').unbind('click');
+    $('.tile').stop();
+    $(this).flip({
+      direction: 'rl'
+    });
+    $(this).on('click', function() {
+      $(this).revertFlip();
+      $.each(tiles, function(index, tile) {
+        tile.move(tile.currentLeft());
       });
     });
-});
+    });
+ });
