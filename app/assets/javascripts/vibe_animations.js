@@ -71,6 +71,11 @@ function Tile(interestingness, leftStart) {
     default:
       tile.addClass("medium");
   }
+
+  this.setNewLeft = function(left)  {
+    this.leftValue = left;
+  };
+
   this.move = function(left) {
     this.left = left;
     this.tile.animate({
@@ -180,6 +185,7 @@ $(document).ready(function() {
   next = function launchNextTile(index) {
     var tile = tiles[index];
     tile.tile.show();
+    tile.setNewLeft($(window).width() + 10);
     tile.move(($(window).width() + 10));
 
     if(currentTileIndex === tiles.length - 1) {
@@ -251,7 +257,7 @@ $(document).ready(function() {
             if(index < 10) {
               this.tile.show('scale');
               tile.move(tile.leftValue + 100);
-              tile.leftValue = $(window).width();
+              tile.setNewLeft($(window).width());
             }
           });
             currentTileIndex += 10;
