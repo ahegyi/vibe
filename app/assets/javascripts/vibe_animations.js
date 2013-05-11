@@ -6,7 +6,7 @@ function defaultMap(){
   var layer = "toner";
   var mapOptions = {
       center: center,
-      zoom: 5,
+      zoom: 3,
       mapTypeId: layer,
       mapTypeControlOptions: {
         mapTypeIds: [layer]
@@ -14,17 +14,15 @@ function defaultMap(){
   };
   var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
   map.mapTypes.set(layer, new google.maps.StamenMapType(layer));
-}
+  }
 
-var latitude;
-var longitude;
 
-function Map(){
+function Map(latitude, longitude){
   var center = new google.maps.LatLng(parseFloat(latitude), parseFloat(longitude));
   var layer = "toner";
   var mapOptions = {
       center: center,
-      zoom: 10,
+      zoom: 8,
       mapTypeId: layer,
       mapTypeControlOptions: {
         mapTypeIds: [layer]
@@ -194,28 +192,39 @@ $(document).ready(function() {
   $('.tile').hide();
 
   //Search bar animation
-  $('form').submit(function(event){
+  $('form').submit( function(event) {
     event.preventDefault();
-      function sendLocation(){
-        var searchVal = $('#searchbox').val();
-        console.log(searchVal);
-            $.ajax({
-            type: 'GET',
-            url: '/geocode',
-            data: { "query": searchVal },
-            dataType: 'json',
-            success:function(data){
-             latitude = data.coordinates[0],
-             longitude = data.coordinates[1],
-             console.log(latitude, longitude);
-             Map();
-            },
-            error: function(){
-              console.log('FAILED');
-            }
-          });
-        }
-      sendLocation();
+
+    var searchVal = $('#searchbox').val();
+
+    $.ajax({
+      type: 'GET',
+      url: '/geocode',
+      data: { "query": searchVal },
+      dataType: 'json',
+      success: function (data) {
+        latitude = data.coordinates[0];
+        longitude = data.coordinates[1];
+        Map(latitude, longitude);
+      },
+      error: function (textStatus) {
+        console.log("Sorry, there was an error geocoding '" + searchVal + "'.");
+      }
+    });
+
+    $.ajax({
+      type: 'GET',
+      url: '/entities',
+      data: { "query" : searchVal },
+      dataType: 'json',
+      success: function (data) {
+        console.log(data);
+      },
+      error: function (textStatus) {
+        console.log("poop");
+        console.log(textStatus);
+      }
+    });
 
     $(nav).animate({
         width : '100%',
@@ -231,21 +240,22 @@ $(document).ready(function() {
         duration: 1750,
         specialEasing: {
           sarah : ".71,.01,.4,.99"
+        }
       }
     });
 
     $(locationBox).animate({
-          height: '40px',
-          fontSize : '15px',
-          marginTop : '-70px',
-          marginLeft : '500px',
-          marginRight : '0',
-          zIndex: '2'
+      height: '40px',
+      fontSize : '15px',
+      marginTop : '-70px',
+      marginLeft : '500px',
+      marginRight : '0',
+      zIndex: '2'
       }, {
-          duration: 1550,
-          specialEasing: {
-          sarah : "0,0,1,1"
-        },
+      duration: 1550,
+      specialEasing: {
+      sarah : "0,0,1,1"
+      },
         complete: function(){
           $.each(tiles, function(index, tile) {
             if(index < 10) {
