@@ -71,7 +71,6 @@ h2 {
 }
 
 .detail {
-<<<<<<< HEAD
   height: 80%;
   width: 80%;
   position: absolute;
@@ -82,16 +81,6 @@ h2 {
   z-index: 10;
   top: 10px;
   left: 10px;
-=======
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 90%;
-  width: 90%;
-  margin: 5%;
-  z-index: 10;
-  opacity: 0.7;
->>>>>>> 8d72d089bcb0900819be4f6efaabaf2a42236623
 }
 
 .tile-text {
