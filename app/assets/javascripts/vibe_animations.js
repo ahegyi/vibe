@@ -1,35 +1,39 @@
 // Google Maps Initializer, by Sarah
+function defaultMap(){
+    var defaultLatitude = 37.77492909600045;
+    var defaultLongitude = -122.41941943099971;
+    var center = new google.maps.LatLng(parseFloat(defaultLatitude), parseFloat(defaultLongitude));
+    var layer = "toner";
+    var mapOptions = {
+        center: center,
+        zoom: 5,
+        mapTypeId: layer,
+        mapTypeControlOptions: {
+          mapTypeIds: [layer]
+        }
+    };
+    var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+    map.mapTypes.set(layer, new google.maps.StamenMapType(layer));
+  }
 
-var defaultLatitude = 28.42;
-var defaultLongitude = 3.42;
+var latitude;
+var longitude;
+function Map(){
+    var center = new google.maps.LatLng(parseFloat(latitude), parseFloat(longitude));
+    var layer = "toner";
+    var mapOptions = {
+        center: center,
+        zoom: 10,
+        mapTypeId: layer,
+        mapTypeControlOptions: {
+          mapTypeIds: [layer]
+        }
+    };
+    var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+    map.mapTypes.set(layer, new google.maps.StamenMapType(layer));
+  }
 
-// This initializes the map and lays layer
-//with lat and longi inserted as the center of the map (defined globally)
-
-function initialize() {
-  var layer = "toner";
-  var map = new google.maps.Map(document.getElementById("map-canvas"), {
-    center: new google.maps.LatLng(parseFloat(defaultLatitude), parseFloat(defaultLongitude)),
-    zoom: 5,
-    mapTypeId: layer,
-    mapTypeControlOptions: {
-        mapTypeIds: [layer]
-    }
-  });
-  map.mapTypes.set(layer, new google.maps.StamenMapType(layer));
-}
-
-//this loads the map by creating the element "script" from google maps api
-//thus appending the "script" child to the body 
-
-function loadScript() {
-  var script = document.createElement("script");
-  script.type = "text/javascript";
-  script.src = "http://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLEMAPS_API_KEY'] %>&sensor=true&callback=initialize";
-  document.body.appendChild(script);
-}
-
-window.onload = loadScript;
+window.onload = defaultMap;
 
 var minTop = 30;
 var maxTop = $(window).height() - 300;
@@ -130,7 +134,7 @@ function getMovementSpeed(interestingness) {
 }
 
 
-$(window).ready(function() {
+$(document).ready(function() {
 
   var locationBox = $('#searchbox');
   var nav = $('#sideNav');
@@ -150,29 +154,29 @@ $(window).ready(function() {
   $('.tile').hide();
 
   //Search bar animation
-  $('#go').on('click', function(){
+  $('form').submit(function(event){
+    event.preventDefault();
       function sendLocation(){
         var searchVal = $('#searchbox').val();
-        alert(searchVal);
-        console.log('sendlocation is being executed')
+        console.log(searchVal);
             $.ajax({
             type: 'GET',
             url: '/geocode',
             data: { "query": searchVal },
             dataType: 'json',
-            // timeout: 5000,
-            success: function(data){
-              initialize()
-              console.log(data);
-              console.log(data.coordinates[0], data.coordinates[1])
-              return(data);
+            success:function(data){
+             latitude = data.coordinates[0],
+             longitude = data.coordinates[1],
+             console.log(latitude, longitude)
+             Map();
             },
-            error: function(){  
-              console.log('FAILED')
+            error:function(textStatus){
+              alert('you have an error');
             }
           });
         }
-        sendLocation();
+      sendLocation();
+
     $(nav).animate({
           width : '100%',
           height : '45px',
@@ -190,6 +194,7 @@ $(window).ready(function() {
         }
       }
     );
+
     $(locationBox).animate({
           height: '40px',
           fontSize : '15px',
@@ -211,17 +216,20 @@ $(window).ready(function() {
           }
         }
      );
+
       locationBox.css('position', 'absolute');
       $('#go').addClass('hidden');
       nav.css('textAlign', 'left');
       $('#map-canvas').css('opacity', '.5');
-    });
+      });
+
       $('body').on('click', '.tile', function(event) {
       $('body').unbind('click');
       $('.tile').stop();
       $(this).flip({
         direction: 'rl'
       });
+
       $(this).on('click', function() {
         $(this).revertFlip();
         $.each(tiles, function(index, tile) {
@@ -229,4 +237,4 @@ $(window).ready(function() {
         });
       });
     });
-});
+ });
