@@ -130,11 +130,9 @@ function getMovementSpeed(interestingness) {
     return Math.floor((Math.random() * (6000 - 4750)) + 4750);
   }
 }
-
 var next;
 
-$(window).ready(function() {
-
+$(document).ready(function() {
   var locationBox = $('#searchbox');
   var nav = $('#sideNav');
   var tiles = [];
@@ -250,6 +248,7 @@ $(window).ready(function() {
               tile.leftValue = $(window).width();
             }
           });
+            currentTileIndex += 10;
           }
         }
     );
