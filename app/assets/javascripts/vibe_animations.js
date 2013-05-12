@@ -19,7 +19,6 @@ function defaultMap(){
   var defaultLatitude = _.shuffle(random_places)[0][0];
   var defaultLongitude = _.shuffle(random_places)[0][1];
   var center = new google.maps.LatLng(defaultLatitude, defaultLongitude);
-  debugger
   var layer = "toner";
   var mapOptions = {
       center: center,
