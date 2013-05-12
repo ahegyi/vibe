@@ -37,7 +37,7 @@ window.onload = defaultMap;
 var allPixData;
   function getPix(picArray){
     allPixData = [];
-    for ( var i=0; i < picArray.length; i++ ){
+    for (var i = 0; i < picArray.length; i += 1){
       var picLink = picArray[i]['media_url'];
       var picInterestingness = picArray[i]['interestingness'];
       var picSource = picArray[i]['source'];
@@ -243,13 +243,15 @@ $(document).ready(function() {
       success: function(data) {
         var picArray = data;
         getPix(picArray);
-        // console.log(allPixData);
+        console.log(allPixData.length);
       },
       error: function (textStatus) {
         console.log("poop");
         console.log(textStatus);
       }
     });
+
+    $('.tile').hide();
 
     $(nav).animate({
         width : '100%',
@@ -303,6 +305,7 @@ $(document).ready(function() {
     nav.css('textAlign', 'left');
     $('#map-canvas').css('opacity', '.5');
   });
+
 
     // window.setInterval(function(){
     //   launchNextTile(currentTileIndex);
