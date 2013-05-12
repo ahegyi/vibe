@@ -46,7 +46,7 @@ var allPixData;
         "link": picLink,
         "interestingness": picInterestingness,
         "source": picSource,
-        "data": picUserData
+        "username": picUserData
       });
     }
   }
