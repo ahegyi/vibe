@@ -34,6 +34,23 @@ function Map(latitude, longitude){
 
 window.onload = defaultMap;
 
+var allPixData;
+  function getPix(picArray){
+    allPixData = [];
+    for ( var i=0; i < picArray.length; i++ ){
+      var picLink = picArray[i]['media_url'];
+      var picInterestingness = picArray[i]['interestingness'];
+      var picSource = picArray[i]['source'];
+      var picUserData = picArray[i]['username'];
+      allPixData.push({
+        "link": picLink,
+        "interestingness": picInterestingness,
+        "source": picSource,
+        "username": picUserData
+      });
+    }
+  }
+
 var minTop = 30;
 var maxTop = $(window).height() - 300;
 var minLeft = $(window).width() / 3;
@@ -217,8 +234,10 @@ $(document).ready(function() {
       url: '/entities',
       data: { "query" : searchVal },
       dataType: 'json',
-      success: function (data) {
-        console.log(data);
+      success: function(data) {
+        var picArray = data;
+        getPix(picArray);
+        // console.log(allPixData);
       },
       error: function (textStatus) {
         console.log("poop");
@@ -242,7 +261,7 @@ $(document).ready(function() {
           sarah : ".71,.01,.4,.99"
         }
       }
-    });
+    );
 
     $(locationBox).animate({
       height: '40px',
