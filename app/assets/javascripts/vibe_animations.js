@@ -34,15 +34,22 @@ function Map(latitude, longitude){
 
 window.onload = defaultMap;
 
-var picLinkArray;
-function getPix(picArray){
-  picLinkArray = [];
-  for ( var i=0; i < picArray.length; i++ ){
-    var picData = picArray[i];
-    var picLink = picArray[i]['media_url'];
-     picLinkArray.push( picLink );
+var allPixData;
+  function getPix(picArray){
+    allPixData = [];
+    for ( var i=0; i < picArray.length; i++ ){
+      var picLink = picArray[i]['media_url'];
+      var picInterestingness = picArray[i]['interestingness'];
+      var picSource = picArray[i]['source'];
+      var picUserData = picArray[i]['username'];
+      allPixData.push({
+        "link": picLink,
+        "interestingness": picInterestingness,
+        "source": picSource,
+        "data": picUserData
+      });
+    }
   }
-}
 
 var minTop = 30;
 var maxTop = $(window).height() - 300;
@@ -229,8 +236,9 @@ $(document).ready(function() {
       dataType: 'json',
       success: function(data) {
         var picArray = data;
+        console.log(data);
         getPix(picArray);
-        // console.log(picLinkArray)
+        console.log(allPixData);
       },
       error: function (textStatus) {
         console.log("poop");
