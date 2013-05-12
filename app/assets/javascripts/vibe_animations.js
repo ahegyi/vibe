@@ -236,9 +236,8 @@ $(document).ready(function() {
       dataType: 'json',
       success: function(data) {
         var picArray = data;
-        console.log(data);
         getPix(picArray);
-        console.log(allPixData);
+        // console.log(allPixData);
       },
       error: function (textStatus) {
         console.log("poop");
