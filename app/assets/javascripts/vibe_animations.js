@@ -292,7 +292,7 @@ $(document).ready(function() {
     });
 
     $(this).on('click', function() {
-      $(this).removeClass('detail', 500);
+      $(this).removeClass('detail', 750);
       // $(this).revertFlip();
       $.each(tiles, function(index, tile) {
         tile.move(tile.currentLeft());
