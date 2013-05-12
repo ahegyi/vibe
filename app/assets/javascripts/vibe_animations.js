@@ -75,7 +75,7 @@ var maxLeft = $(window).width() - 500;
 //Prototype for tiles
 function Tile(interestingness, link, source, userName, leftStart) {
   var body = $('body');
-  var tile = $('<div class="tile"></div>');
+  var tile = $('<div class="tile"><img src="' + link + '"></div>');
   this.tile = tile;
   this.interestingness = interestingness;
   this.topValue = getTopValue(Math.floor(Math.random() * 5) + 1);
@@ -123,6 +123,27 @@ function Tile(interestingness, link, source, userName, leftStart) {
   };
 
   body.append(tile);
+}
+
+var tiles;
+var currentTileIndex = 0;
+
+function generateTiles() {
+  for(var i = 0; i < allPixData.length; i += 1) {
+    var interestingness = allPixData[i].interestingness;
+    var link = allPixData[i].link;
+    var source = allPixData[i].source;
+    var userName = allPixData[i].username;
+    var leftStart;
+    if (i < 10) {
+      leftStart = getStartLeftValue(Math.floor(Math.random() * 4) + 1);
+    }
+    else {
+      leftStart = $(window).width() + 10;
+    }
+    tiles.push(new Tile(interestingness, link, source, userName, leftStart));
+    currentTileIndex += 1;
+  }
 }
 
 function getTopValue(rowNum) {
@@ -173,33 +194,13 @@ function getMovementSpeed(interestingness) {
   }
 }
 
-function generateTiles() {
-  for(var i = 0; i < allPixData.length; i += 1) {
-    var interestingness = allPixData[i].interestingness;
-    var link = allPixData[i].link;
-    var source = allPixData[i].source;
-    var userName = allPixData[i].username;
-    var leftStart;
-    if (i < 10) {
-      leftStart = getStartLeftValue(Math.floor(Math.random() * 4) + 1);
-    }
-    else {
-      leftStart = $(window).width() + 10;
-    }
-    tiles.push(new Tile(interestingness, link, source, userName, leftStart));
-  }
-}
-
 var next;
 
 $(document).ready(function() {
 
   var locationBox = $('#searchbox');
   var nav = $('#sideNav');
-  var tiles = [];
-  var currentTileIndex = 10;
-
-
+  tiles = [];
 
   // tiles.push(new Tile(1, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
   // tiles.push(new Tile(50, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
@@ -288,15 +289,38 @@ $(document).ready(function() {
       success: function(data) {
         var picArray = data;
         getPix(picArray);
-        console.log(allPixData);
+        generateTiles();
+        $('.tile').hide();
+
+        $.each(tiles, function(index, tile) {
+          if(index < 10) {
+            this.tile.show('scale');
+            tile.move(tile.leftValue + 100);
+            tile.setNewLeft($(window).width() + 10);
+          }
+        });
+
+        $('body').on('click', '.tile', function(event) {
+          $('body').unbind('click');
+          $('.tile').stop();
+          $(this).addClass('detail', 750);
+        });
+
+        $(this).on('click', function() {
+          $(this).removeClass('detail', 750);
+          $.each(tiles, function(index, tile) {
+            tile.move(tile.currentLeft());
+          });
+        });
+
+        setInterval(function(){
+          next(currentTileIndex);
+        }, 750);
       },
       error: function (textStatus) {
-        console.log("poop");
         console.log(textStatus);
       }
     });
-
-    $('.tile').hide();
 
     $(nav).animate({
         width : '100%',
@@ -331,21 +355,19 @@ $(document).ready(function() {
       sarah : "0,0,1,1"
       },
         complete: function(){
-          $.each(tiles, function(index, tile) {
-            if(index < 10) {
-              this.tile.show('scale');
-              tile.move(tile.leftValue + 100);
-              tile.setNewLeft($(window).width());
-            }
-          });
-            currentTileIndex += 10;
+          // $.each(tiles, function(index, tile) {
+          //   if(index < 10) {
+          //     this.tile.show('scale');
+          //     tile.move(tile.leftValue + 100);
+          //     tile.setNewLeft($(window).width() + 10);
+          //   }
+          // });
           }
         }
     );
-
-    setInterval(function(){
-      next(currentTileIndex);
-    }, 750);
+    // setInterval(function(){
+    //   next(currentTileIndex);
+    // }, 750);
 
     locationBox.css('position', 'absolute');
     $('#vibe').css('textAlign', 'left');
@@ -357,23 +379,23 @@ $(document).ready(function() {
     //   launchNextTile(currentTileIndex);
     // }, 2000);
 
-    $('body').on('click', '.tile', function(event) {
-      $('body').unbind('click');
-      $('.tile').stop();
-      $(this).addClass('detail', 750);
-      // $(this).flip({
-      //   direction: 'rl',
-      //   content: '<p>Hello!</p>'
-      //   //onEnd: function() {
-      //     //$(this).addClass('detail', 1000);
-      //   //}
-    });
+    // $('body').on('click', '.tile', function(event) {
+    //   $('body').unbind('click');
+    //   $('.tile').stop();
+    //   $(this).addClass('detail', 750);
+    //   // $(this).flip({
+    //   //   direction: 'rl',
+    //   //   content: '<p>Hello!</p>'
+    //   //   //onEnd: function() {
+    //   //     //$(this).addClass('detail', 1000);
+    //   //   //}
+    // });
 
-    $(this).on('click', function() {
-      $(this).removeClass('detail', 750);
-      // $(this).revertFlip();
-      $.each(tiles, function(index, tile) {
-        tile.move(tile.currentLeft());
-    });
-  });
+    // $(this).on('click', function() {
+    //   $(this).removeClass('detail', 750);
+    //   // $(this).revertFlip();
+    //   $.each(tiles, function(index, tile) {
+    //     tile.move(tile.currentLeft());
+    // });
+  //});
 });
