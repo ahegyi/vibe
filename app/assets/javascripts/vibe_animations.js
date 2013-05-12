@@ -23,7 +23,7 @@ function defaultMap(){
   var layer = "toner";
   var mapOptions = {
       center: center,
-      zoom: 10,
+      zoom: 5,
       mapTypeId: layer,
       mapTypeControlOptions: {
         mapTypeIds: [layer]
