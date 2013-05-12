@@ -73,7 +73,7 @@ var minLeft = $(window).width() / 3;
 var maxLeft = $(window).width() - 500;
 
 //Prototype for tiles
-function Tile(interestingness, leftStart) {
+function Tile(interestingness, link, source, userName, leftStart) {
   var body = $('body');
   var tile = $('<div class="tile"></div>');
   this.tile = tile;
@@ -87,16 +87,16 @@ function Tile(interestingness, leftStart) {
   });
   this.currentLeft = function(){return parseInt(tile.css('left'), 10);};
   switch(interestingness) {
-    case 1:
+    case (interestingness === 0 || interestingness < 20):
       tile.addClass("small");
       break;
-    case 5:
+    case (interestingness > 20 || interestingness < 50):
       tile.addClass("medium");
       break;
-    case 50:
+    case (interestingness > 50 || interestingness < 70):
       tile.addClass("large");
       break;
-    case 100:
+    case (interestingness > 70 || interestingness <= 100):
       tile.addClass("extra-large");
       break;
     default:
@@ -173,6 +173,23 @@ function getMovementSpeed(interestingness) {
   }
 }
 
+function generateTiles() {
+  for(var i = 0; i < allPixData.length; i += 1) {
+    var interestingness = allPixData[i].interestingness;
+    var link = allPixData[i].link;
+    var source = allPixData[i].source;
+    var userName = allPixData[i].username;
+    var leftStart;
+    if (i < 10) {
+      leftStart = getStartLeftValue(Math.floor(Math.random() * 4) + 1);
+    }
+    else {
+      leftStart = $(window).width() + 10;
+    }
+    tiles.push(new Tile(interestingness, link, source, userName, leftStart));
+  }
+}
+
 var next;
 
 $(document).ready(function() {
@@ -182,36 +199,38 @@ $(document).ready(function() {
   var tiles = [];
   var currentTileIndex = 10;
 
-  tiles.push(new Tile(1, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(50, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(1, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(5, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(100, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(5, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(1, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(50, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(5, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(5, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(1, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(50, $(window).width()));
-  tiles.push(new Tile(1, $(window).width()));
-  tiles.push(new Tile(5, $(window).width()));
-  tiles.push(new Tile(100, $(window).width()));
-  tiles.push(new Tile(5, $(window).width()));
-  tiles.push(new Tile(1, $(window).width()));
-  tiles.push(new Tile(50, $(window).width()));
-  tiles.push(new Tile(5, $(window).width()));
-  tiles.push(new Tile(5, $(window).width()));
-  tiles.push(new Tile(1, $(window).width()));
-  tiles.push(new Tile(50, $(window).width()));
-  tiles.push(new Tile(1, $(window).width()));
-  tiles.push(new Tile(5, $(window).width()));
-  tiles.push(new Tile(100, $(window).width()));
-  tiles.push(new Tile(5, $(window).width()));
-  tiles.push(new Tile(1, $(window).width()));
-  tiles.push(new Tile(50, $(window).width()));
-  tiles.push(new Tile(5, $(window).width()));
-  tiles.push(new Tile(5, $(window).width()));
+
+
+  // tiles.push(new Tile(1, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  // tiles.push(new Tile(50, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  // tiles.push(new Tile(34, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  // tiles.push(new Tile(23, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  // tiles.push(new Tile(80, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  // tiles.push(new Tile(45, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  // tiles.push(new Tile(56, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  // tiles.push(new Tile(50, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  // tiles.push(new Tile(34, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  // tiles.push(new Tile(43, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  // tiles.push(new Tile(67, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
+  // tiles.push(new Tile(50, $(window).width()));
+  // tiles.push(new Tile(72, $(window).width()));
+  // tiles.push(new Tile(25, $(window).width()));
+  // tiles.push(new Tile(56, $(window).width()));
+  // tiles.push(new Tile(57, $(window).width()));
+  // tiles.push(new Tile(23, $(window).width()));
+  // tiles.push(new Tile(13, $(window).width()));
+  // tiles.push(new Tile(8, $(window).width()));
+  // tiles.push(new Tile(20, $(window).width()));
+  // tiles.push(new Tile(45, $(window).width()));
+  // tiles.push(new Tile(50, $(window).width()));
+  // tiles.push(new Tile(34, $(window).width()));
+  // tiles.push(new Tile(73, $(window).width()));
+  // tiles.push(new Tile(80, $(window).width()));
+  // tiles.push(new Tile(74, $(window).width()));
+  // tiles.push(new Tile(14, $(window).width()));
+  // tiles.push(new Tile(57, $(window).width()));
+  // tiles.push(new Tile(23, $(window).width()));
+  // tiles.push(new Tile(56, $(window).width()));
 
   next = function launchNextTile(index) {
     var tile = tiles[index];
@@ -228,11 +247,21 @@ $(document).ready(function() {
     }
   };
 
+
   $('.tile').hide();
 
   //Search bar animation
   $('form').submit( function(event) {
     event.preventDefault();
+
+    $.ajaxSetup({
+      beforeSend: function(){
+          $('.loader').show();
+      },
+      complete: function(){
+          $('.loader').hide();
+      }
+    });
 
     var searchVal = $('#searchbox').val();
 
