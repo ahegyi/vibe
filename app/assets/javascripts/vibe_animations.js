@@ -264,11 +264,13 @@ $(document).ready(function() {
 
     $(nav).animate({
         width : '100%',
-        height : '25px',
+        height : '20px',
         fontSize : '120%',
         letterSpacing: '1em',
         marginTop : '0',
         marginLeft : '0',
+        paddingTop: '0.4%',
+        paddingLeft: '1%',
         paddingBottom : '3%',
         borderRadius : '',
         zIndex: '1'
@@ -283,7 +285,7 @@ $(document).ready(function() {
     $(locationBox).animate({
       height: '40px',
       fontSize : '20px',
-      top: '-11.5%',
+      marginTop: '-50px',
       marginLeft : '50%',
       marginRight : '0%',
       zIndex: '2'
