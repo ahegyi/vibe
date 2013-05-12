@@ -13,17 +13,16 @@ var random_places = {
   "Boston": [42.358425544000454, -71.05976945499964],
   "Nassau": [25.058225872000435, -77.34305975299964]
 }
-
 // Google Maps Initializer, by Sarah
 function defaultMap(){
-  var defaultLatitude = _.shuffle(random_places)[0][0];
-  var defaultLongitude = _.shuffle(random_places)[0][1];
+  var random_place = _.shuffle(random_places);
+  var defaultLatitude = (random_place)[0][0];
+  var defaultLongitude = (random_place)[0][1];
   var center = new google.maps.LatLng(defaultLatitude, defaultLongitude);
-  debugger
   var layer = "toner";
   var mapOptions = {
       center: center,
-      zoom: 3,
+      zoom: 5,
       mapTypeId: layer,
       mapTypeControlOptions: {
         mapTypeIds: [layer]
@@ -264,11 +263,13 @@ $(document).ready(function() {
 
     $(nav).animate({
         width : '100%',
-        height : '25px',
+        height : '20px',
         fontSize : '120%',
         letterSpacing: '1em',
         marginTop : '0',
         marginLeft : '0',
+        paddingTop: '0.4%',
+        paddingLeft: '1%',
         paddingBottom : '3%',
         borderRadius : '',
         zIndex: '1'
@@ -283,7 +284,7 @@ $(document).ready(function() {
     $(locationBox).animate({
       height: '40px',
       fontSize : '20px',
-      top: '-11.5%',
+      marginTop: '-50px',
       marginLeft : '50%',
       marginRight : '0%',
       zIndex: '2'
