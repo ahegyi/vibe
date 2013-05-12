@@ -53,7 +53,7 @@ window.onload = defaultMap;
 var allPixData;
   function getPix(picArray){
     allPixData = [];
-    for ( var i=0; i < picArray.length; i++ ){
+    for (var i = 0; i < picArray.length; i += 1){
       var picLink = picArray[i]['media_url'];
       var picInterestingness = picArray[i]['interestingness'];
       var picSource = picArray[i]['source'];
@@ -267,6 +267,8 @@ $(document).ready(function() {
       }
     });
 
+    $('.tile').hide();
+
     $(nav).animate({
         width : '100%',
         height : '20px',
@@ -320,6 +322,7 @@ $(document).ready(function() {
     $('#vibe').css('textAlign', 'left');
     $('#map-canvas').css('opacity', '.5');
   });
+
 
     // window.setInterval(function(){
     //   launchNextTile(currentTileIndex);

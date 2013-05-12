@@ -15,10 +15,17 @@ module VibeHelper
       :client_id     => ENV['FOURSQUARE_CLIENT_ID'],
       :client_secret => ENV['FOURSQUARE_CLIENT_SECRET'],
       :api_version   => '20130505',
+      :verify => OpenSSL::SSL::VERIFY_NONE
     }
 
-    client_options.merge!(:ssl => {:verify  => OpenSSL::SSL::VERIFY_PEER, :ca_file => ENV['SSL_CERT']}) if ENV['SSL_CERT']
+    # check to see if SSL cert exists, otherwise skip SSL verify (for local development)
 
+    if true
+      client_options.merge!(:ssl => {:verify  => OpenSSL::SSL::VERIFY_PEER, :ca_file => '/usr/local/opt/curl-ca-bundle/share/ca-bundle.crt'})
+    else 
+      client_options.merge!(:ssl => {:verify  => OpenSSL::SSL::VERIFY_NONE})
+    end
+    
     client = Foursquare2::Client.new(client_options)
 
     venues  = client.trending_venues(ll, {:limit => 10, :radius => 5000}).venues
