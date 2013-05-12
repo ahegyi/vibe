@@ -237,7 +237,7 @@ $(document).ready(function() {
       success: function(data) {
         var picArray = data;
         getPix(picArray);
-        // console.log(allPixData);
+        console.log(allPixData);
       },
       error: function (textStatus) {
         console.log("poop");
@@ -247,16 +247,16 @@ $(document).ready(function() {
 
     $(nav).animate({
         width : '100%',
-        height : '45px',
-        fontSize : '50px',
-        marginTop : '-24px',
+        height : '25px',
+        fontSize : '120%',
+        letterSpacing: '1em',
+        marginTop : '0',
         marginLeft : '0',
-        paddingLeft : '70px',
-        paddingBottom : '20px',
+        paddingBottom : '3%',
         borderRadius : '',
         zIndex: '1'
       }, {
-        duration: 1750,
+        duration: 750,
         specialEasing: {
           sarah : ".71,.01,.4,.99"
         }
@@ -265,13 +265,13 @@ $(document).ready(function() {
 
     $(locationBox).animate({
       height: '40px',
-      fontSize : '15px',
-      marginTop : '-70px',
-      marginLeft : '500px',
-      marginRight : '0',
+      fontSize : '20px',
+      top: '-11.5%',
+      marginLeft : '50%',
+      marginRight : '0%',
       zIndex: '2'
       }, {
-      duration: 1550,
+      duration: 550,
       specialEasing: {
       sarah : "0,0,1,1"
       },
@@ -293,8 +293,7 @@ $(document).ready(function() {
     }, 750);
 
     locationBox.css('position', 'absolute');
-    $('#go').addClass('hidden');
-    nav.css('textAlign', 'left');
+    $('#vibe').css('textAlign', 'left');
     $('#map-canvas').css('opacity', '.5');
   });
 
