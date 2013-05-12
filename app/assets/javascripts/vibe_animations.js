@@ -34,6 +34,16 @@ function Map(latitude, longitude){
 
 window.onload = defaultMap;
 
+var picLinkArray;
+function getPix(picArray){
+  picLinkArray = [];
+  for ( var i=0; i < picArray.length; i++ ){
+    var picData = picArray[i];
+    var picLink = picArray[i]['media_url'];
+     picLinkArray.push( picLink );
+  }
+}
+
 var minTop = 30;
 var maxTop = $(window).height() - 300;
 var minLeft = $(window).width() / 3;
@@ -217,8 +227,10 @@ $(document).ready(function() {
       url: '/entities',
       data: { "query" : searchVal },
       dataType: 'json',
-      success: function (data) {
-        console.log(data);
+      success: function(data) {
+        var picArray = data;
+        getPix(picArray);
+        // console.log(picLinkArray)
       },
       error: function (textStatus) {
         console.log("poop");
@@ -242,7 +254,7 @@ $(document).ready(function() {
           sarah : ".71,.01,.4,.99"
         }
       }
-    });
+    );
 
     $(locationBox).animate({
       height: '40px',
