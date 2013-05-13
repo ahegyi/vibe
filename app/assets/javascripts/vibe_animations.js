@@ -23,6 +23,7 @@ function defaultMap(){
   var mapOptions = {
       center: center,
       zoom: 5,
+      disableDefaultUI: true,
       mapTypeId: layer,
       mapTypeControlOptions: {
         mapTypeIds: [layer]
@@ -38,6 +39,7 @@ function Map(latitude, longitude){
   var mapOptions = {
       center: center,
       zoom: 8,
+      disableDefaultUI: true,
       mapTypeId: layer,
       mapTypeControlOptions: {
         mapTypeIds: [layer]
@@ -58,11 +60,13 @@ function getPix(picArray){
     var picInterestingness = picArray[i]['interestingness'];
     var picSource = picArray[i]['source'];
     var picUserData = picArray[i]['username'];
+    var picExternalURL = picArray[i]['external_url'];
     allPixData.push({
       "link": picLink,
       "interestingness": picInterestingness,
       "source": picSource,
-      "username": picUserData
+      "username": picUserData,
+      "external url": picExternalURL
     });
   }
 }
@@ -190,7 +194,6 @@ $(document).ready(function() {
   //Search bar animation
   $('form').submit( function(event) {
     event.preventDefault();
-
     $.ajaxSetup({
       beforeSend: function(){
           $('.loader').show();
@@ -199,7 +202,7 @@ $(document).ready(function() {
           $('.loader').hide();
       }
     });
-
+    // var searchVal = $('#searchbox').val();
     $.ajax({
       type: 'GET',
       url: '/geocode',
@@ -214,7 +217,6 @@ $(document).ready(function() {
         console.log("Sorry, there was an error geocoding '" + $('#searchbox').val() + "'.");
       }
     });
-
     $.ajax({
       type: 'GET',
       url: '/entities',
@@ -224,6 +226,7 @@ $(document).ready(function() {
         var picArray = data;
         getPix(picArray);
         generateTiles();
+        
         $('.tile').hide();
 
         window.setInterval(function(){
@@ -271,7 +274,7 @@ $(document).ready(function() {
     $(locationBox).animate({
       height: '40px',
       fontSize : '20px',
-      marginTop: '-50px',
+      marginTop: '-57px',
       marginLeft : '50%',
       marginRight : '0%',
       zIndex: '2'
@@ -289,3 +292,4 @@ $(document).ready(function() {
     $('#map-canvas').css('opacity', '.5');
   });
 });
+// });
