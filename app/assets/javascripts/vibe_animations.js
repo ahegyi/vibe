@@ -80,7 +80,6 @@ function Tile(interestingness, link, source, userName, leftStart) {
   this.interestingness = interestingness;
   this.topValue = getTopValue(Math.floor(Math.random() * 5) + 1);
   this.leftValue = leftStart;
-  //this.leftValue = getStartLeftValue(Math.floor(Math.random() * 4) + 1);
   tile.css({
     "top": this.topValue + 'px',
     "left": this.leftValue + 'px'
@@ -195,16 +194,16 @@ function getStartLeftValue(columnNum) {
 
 function getMovementSpeed(interestingness) {
   if(interestingness === 1) {
-    return Math.floor((Math.random() * (4000 - 3000)) + 3000);
+    return Math.floor((Math.random() * (4500 - 3500)) + 3500);
   }
   else if(interestingness === 2) {
-    return Math.floor((Math.random() * (4500 - 4000)) + 4000);
+    return Math.floor((Math.random() * (5500 - 5000)) + 5000);
   }
   else if(interestingness === 3) {
-    return Math.floor((Math.random() * (5000 - 4500)) + 4500);
+    return Math.floor((Math.random() * (6500 - 5500)) + 5500);
   }
   else {
-    return Math.floor((Math.random() * (6000 - 4750)) + 4750);
+    return Math.floor((Math.random() * (7500 - 6000)) + 6000);
   }
 }
 
