@@ -105,10 +105,10 @@ function Tile(interestingness, link, source, userName, leftStart) {
 
   this.setNewLeft = function(left)  {
     this.leftValue = left;
+    $(this).css({'left': left + 'px'});
   };
 
   this.move = function(left) {
-    this.left = left;
     this.tile.animate({
       'left': '-=' + left + 'px'
       },
@@ -146,12 +146,9 @@ function generateTiles() {
 }
 
 function launchNextTile(index) {
-  console.log(tiles);
-  console.log(index);
-
   var tile = tiles[index];
+  tile.setNewLeft(($(window).width() + 10));
   tile.tile.show();
-  tile.setNewLeft($(window).width() + 10);
   tile.move(($(window).width() + 10));
 
   if(currentTileIndex === tiles.length - 1) {
@@ -262,7 +259,6 @@ $(document).ready(function() {
           if(index < 10) {
             this.tile.show('scale');
             tile.move(tile.leftValue + 100);
-            tile.setNewLeft($(window).width() + 10);
           }
         });
 
