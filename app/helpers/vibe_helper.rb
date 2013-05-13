@@ -7,7 +7,7 @@ module VibeHelper
 
   # lat and long arguments should be floats
   def foursquare_ll(lat, long)
-    fs_interestingness = 20..80
+    fs_interestingness = 55
 
     ll = [lat, long].join(",")
 
