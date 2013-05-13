@@ -217,7 +217,6 @@ $(document).ready(function() {
   //Search bar animation
   $('form').submit( function(event) {
     event.preventDefault();
-
     $.ajaxSetup({
       beforeSend: function(){
           $('.loader').show();
@@ -227,12 +226,11 @@ $(document).ready(function() {
       }
     });
 
-    var searchVal = $('#searchbox').val();
-
+    // var searchVal = $('#searchbox').val();
     $.ajax({
       type: 'GET',
       url: '/geocode',
-      data: { "query": searchVal },
+      data: { "query": $('#searchbox').val() },
       dataType: 'json',
       success: function (data) {
         latitude = data.coordinates[0];
@@ -240,14 +238,13 @@ $(document).ready(function() {
         Map(latitude, longitude);
       },
       error: function (textStatus) {
-        console.log("Sorry, there was an error geocoding '" + searchVal + "'.");
+        console.log("Sorry, there was an error geocoding '" + $('#searchbox').val() + "'.");
       }
     });
-
     $.ajax({
       type: 'GET',
       url: '/entities',
-      data: { "query" : searchVal },
+      data: { "query" : $('#searchbox').val() },
       dataType: 'json',
       success: function(data) {
         var picArray = data;
@@ -326,3 +323,29 @@ $(document).ready(function() {
     $('#map-canvas').css('opacity', '.5');
   });
 });
+
+
+    // window.setInterval(function(){
+    //   launchNextTile(currentTileIndex);
+    // }, 2000);
+
+    $('body').on('click', '.tile', function(event) {
+      $('body').unbind('click');
+      $('.tile').stop();
+      $(this).addClass('detail', 750);
+      // $(this).flip({
+      //   direction: 'rl',
+      //   content: '<p>Hello!</p>'
+      //   //onEnd: function() {
+      //     //$(this).addClass('detail', 1000);
+      //   //}
+    });
+
+    $(this).on('click', function() {
+      $(this).removeClass('detail', 500);
+      // $(this).revertFlip();
+      $.each(tiles, function(index, tile) {
+        tile.move(tile.currentLeft());
+    });
+  });
+// });
