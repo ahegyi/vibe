@@ -89,6 +89,7 @@ function Tile(interestingness, link, picExternalURL, source, userName) {
     "left": this.leftValue + 'px'
   });
   this.currentLeft = function(){return parseInt(tile.css('left'), 10);};
+  this.theWidth = function(){return parseInt(tile.css('width'), 10);};
   switch(interestingness) {
     case (interestingness === 0 || interestingness < 20):
       tile.addClass("small");
@@ -136,6 +137,29 @@ function generateTiles() {
 
     tiles.push(new Tile(interestingness, link, picExternalURL, source, userName));
   }
+}
+
+function getLeftMostVisibleTileIndex() {
+  // var tilesWithLeftValGreaterThanZero = _.filter(tiles,
+  //                                       function (tile) {
+  //                                         return tile.currentLeft() > 0;
+  //                                       });
+
+  var minLeftIndex = tiles.length - 1;
+  for (var i = 0; i < tiles.length; i += 1) {
+    if ( tiles[i].currentLeft() > (0 - tiles[i].theWidth()) &&
+         tiles[i].currentLeft() < tiles[minLeftIndex].currentLeft() ) {
+
+      minLeftIndex = i;
+    }
+  }
+
+  // var minLeft = _.min(tilesWithLeftValGreaterThanZero,
+  //               function (tile) {
+  //                 return tile.currentLeft();
+  //               });
+
+  return minLeftIndex;
 }
 
 function launchNextTile(index) {
@@ -190,17 +214,19 @@ $(document).ready(function() {
 
   var locationBox = $('#searchbox');
   var nav = $('#sideNav');
-  tiles = [];
+
 
   //Search bar animation
   $('form').submit( function(event) {
     event.preventDefault();
     $.ajaxSetup({
       beforeSend: function(){
-          $('.loader').show();
+        $('.loader').show();
+        $('.tile').remove();
+        tiles = [];
       },
       complete: function(){
-          $('.loader').hide();
+        $('.loader').hide();
       }
     });
     // var searchVal = $('#searchbox').val();
@@ -227,25 +253,52 @@ $(document).ready(function() {
         var picArray = data;
         getPix(picArray);
         generateTiles();
-        
+
         $('.tile').hide();
 
-        window.setInterval(function(){
+        var tileLaunching = window.setInterval(function(){
           launchNextTile(currentTileIndex);
         }, 500);
+        var running = true;
 
-        $('body').on('click', '.tile', function(event) {
-          $('body').unbind('click');
-          $('.tile').stop();
-          $(this).addClass('detail', 750);
+        $('body').keyup(function(e){
+          if(e.keyCode === 32 && running) {
+            // user has pressed space
+            $('.tile').stop();
+            clearInterval(tileLaunching);
+            running = false;
+            currentTileIndex = getLeftMostVisibleTileIndex();
+          }
+          else {
+            tileLaunching = window.setInterval(function(){
+              launchNextTile(currentTileIndex);
+            }, 250);
+            running = true;
+          }
         });
 
-        $(this).on('click', function() {
-          $(this).removeClass('detail', 750);
-          $.each(tiles, function(index, tile) {
-            tile.move(tile.currentLeft());
-          });
-        });
+        // $('body').on('click', '.tile', function(event) {
+        //   $(this).unbind('click');
+        //   // stop all currently moving tiles
+        //   $('.tile').stop();
+        //   // stop new tiles from launching on to the page
+        //   clearInterval(tileLaunching);
+        //   // on the next click, everything starts again
+        //   $('body').on('click', '.tile', function (e) {
+        //     $(this).unbind('click');
+        //     tileLaunching = window.setInterval(function(){
+        //       launchNextTile(currentTileIndex);
+        //     }, 500);
+        //   });
+        //   //$(this).addClass('detail', 750);
+        // });
+
+        // $(this).on('click', function() {
+        //   $(this).removeClass('detail', 750);
+        //   $.each(tiles, function(index, tile) {
+        //     tile.move(tile.currentLeft());
+        //   });
+        // });
       },
       error: function (textStatus) {
         console.log(textStatus);
