@@ -12,7 +12,7 @@ var random_places = {
   "Washington D.C.": [38.895107049000444, -77.03636627099968],
   "Boston": [42.358425544000454, -71.05976945499964],
   "Nassau": [25.058225872000435, -77.34305975299964]
-}
+};
 // Google Maps Initializer, by Sarah
 function defaultMap(){
   var random_place = _.shuffle(random_places);
