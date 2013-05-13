@@ -23,6 +23,7 @@ function defaultMap(){
   var mapOptions = {
       center: center,
       zoom: 5,
+      disableDefaultUI: true,
       mapTypeId: layer,
       mapTypeControlOptions: {
         mapTypeIds: [layer]
@@ -39,6 +40,7 @@ function Map(latitude, longitude){
   var mapOptions = {
       center: center,
       zoom: 8,
+      disableDefaultUI: true,
       mapTypeId: layer,
       mapTypeControlOptions: {
         mapTypeIds: [layer]
