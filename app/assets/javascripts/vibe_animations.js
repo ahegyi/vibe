@@ -1,12 +1,28 @@
+var random_places = {
+  "San Francisco":[37.77492909600045, -122.41941943099971],
+  "Phillippines":[12.99999769900046, 121.99999988200057],
+  "New York":[40.714267332000475, -74.00596989999963],
+  "London":[51.50852615600047, -0.12573883899955263],
+  "Tokyo":[35.68949711500045, 139.69170993600062],
+  "Paris":[48.8534093560005, 2.348796127000412],
+  "Cyprus":[34.99999588200046, 32.99999659800045],
+  "Mumbai":[19.072827430000473, 72.88260923100052],
+  "Athens":[37.97944991500049, 23.716215660000444],
+  "Rome":[41.89473822600047, 12.483895930000415],
+  "Washington D.C.": [38.895107049000444, -77.03636627099968],
+  "Boston": [42.358425544000454, -71.05976945499964],
+  "Nassau": [25.058225872000435, -77.34305975299964]
+}
 // Google Maps Initializer, by Sarah
 function defaultMap(){
-  var defaultLatitude = 37.77492909600045;
-  var defaultLongitude = -122.41941943099971;
-  var center = new google.maps.LatLng(parseFloat(defaultLatitude), parseFloat(defaultLongitude));
+  var random_place = _.shuffle(random_places);
+  var defaultLatitude = (random_place)[0][0];
+  var defaultLongitude = (random_place)[0][1];
+  var center = new google.maps.LatLng(defaultLatitude, defaultLongitude);
   var layer = "toner";
   var mapOptions = {
       center: center,
-      zoom: 3,
+      zoom: 5,
       mapTypeId: layer,
       mapTypeControlOptions: {
         mapTypeIds: [layer]
@@ -253,11 +269,13 @@ $(document).ready(function() {
 
     $(nav).animate({
         width : '100%',
-        height : '25px',
+        height : '20px',
         fontSize : '120%',
         letterSpacing: '1em',
         marginTop : '0',
         marginLeft : '0',
+        paddingTop: '0.4%',
+        paddingLeft: '1%',
         paddingBottom : '3%',
         borderRadius : '',
         zIndex: '1'
@@ -272,7 +290,7 @@ $(document).ready(function() {
     $(locationBox).animate({
       height: '40px',
       fontSize : '20px',
-      top: '-11.5%',
+      marginTop: '-50px',
       marginLeft : '50%',
       marginRight : '0%',
       zIndex: '2'
