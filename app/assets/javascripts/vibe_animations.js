@@ -323,4 +323,29 @@ $(document).ready(function() {
     $('#map-canvas').css('opacity', '.5');
   });
 });
+
+
+    // window.setInterval(function(){
+    //   launchNextTile(currentTileIndex);
+    // }, 2000);
+
+    $('body').on('click', '.tile', function(event) {
+      $('body').unbind('click');
+      $('.tile').stop();
+      $(this).addClass('detail', 750);
+      // $(this).flip({
+      //   direction: 'rl',
+      //   content: '<p>Hello!</p>'
+      //   //onEnd: function() {
+      //     //$(this).addClass('detail', 1000);
+      //   //}
+    });
+
+    $(this).on('click', function() {
+      $(this).removeClass('detail', 500);
+      // $(this).revertFlip();
+      $.each(tiles, function(index, tile) {
+        tile.move(tile.currentLeft());
+    });
+  });
 // });
