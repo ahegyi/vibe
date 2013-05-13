@@ -285,7 +285,7 @@ $(document).ready(function() {
     );
 
     locationBox.css('position', 'absolute');
-    $('#vibe').css('textAlign', 'left');
+    $('#vibe').css('float', 'left');
     $('#map-canvas').css('opacity', '.5');
   });
 });
