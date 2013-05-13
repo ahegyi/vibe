@@ -66,7 +66,7 @@ function getPix(picArray){
       "interestingness": picInterestingness,
       "source": picSource,
       "username": picUserData,
-      "external url": picExternalURL
+      "external_url": picExternalURL
     });
   }
 }
@@ -77,9 +77,9 @@ var minLeft = $(window).width() / 3;
 var maxLeft = $(window).width() - 500;
 
 //Prototype for tiles
-function Tile(interestingness, link, source, userName) {
+function Tile(interestingness, link, picExternalURL, source, userName) {
   var body = $('body');
-  var tile = $('<div class="tile"><img src="' + link + '"></div>');
+  var tile = $('<div class="tile"><a target="_blank" href="' + picExternalURL + '"><img src="' + link + '"></a></div>');
   this.tile = tile;
   this.interestingness = interestingness;
   this.topValue = getTopValue(Math.floor(Math.random() * 5) + 1);
@@ -132,8 +132,9 @@ function generateTiles() {
     var link = allPixData[i].link;
     var source = allPixData[i].source;
     var userName = allPixData[i].username;
+    var picExternalURL = allPixData[i].external_url;
 
-    tiles.push(new Tile(interestingness, link, source, userName));
+    tiles.push(new Tile(interestingness, link, picExternalURL, source, userName));
   }
 }
 
