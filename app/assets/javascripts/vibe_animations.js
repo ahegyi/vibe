@@ -131,7 +131,7 @@ function generateTiles() {
     var source = allPixData[i].source;
     var userName = allPixData[i].username;
 
-    tiles.push(new Tile(interestingness, link, source, userName, leftStart));
+    tiles.push(new Tile(interestingness, link, source, userName));
   }
 }
 
