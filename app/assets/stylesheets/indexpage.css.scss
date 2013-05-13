@@ -42,8 +42,17 @@ body {
   text-shadow: 0 1px 0 #fff;
   line-height: 1.5;
 }
+
 #search > #searchbox{
 
+}
+
+#searchbox:focus {
+  -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+      box-shadow: none;
+  outline-width: 0;
+  outline: none;
 }
 
 input {

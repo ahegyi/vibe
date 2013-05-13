@@ -60,11 +60,13 @@ function getPix(picArray){
     var picInterestingness = picArray[i]['interestingness'];
     var picSource = picArray[i]['source'];
     var picUserData = picArray[i]['username'];
+    var picExternalURL = picArray[i]['external_url'];
     allPixData.push({
       "link": picLink,
       "interestingness": picInterestingness,
       "source": picSource,
-      "username": picUserData
+      "username": picUserData,
+      "external url": picExternalURL
     });
   }
 }
@@ -224,6 +226,7 @@ $(document).ready(function() {
         var picArray = data;
         getPix(picArray);
         generateTiles();
+        
         $('.tile').hide();
 
         window.setInterval(function(){
@@ -271,7 +274,7 @@ $(document).ready(function() {
     $(locationBox).animate({
       height: '40px',
       fontSize : '20px',
-      marginTop: '-50px',
+      marginTop: '-57px',
       marginLeft : '50%',
       marginRight : '0%',
       zIndex: '2'
