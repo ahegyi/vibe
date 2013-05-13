@@ -168,16 +168,16 @@ function getTopValue(rowNum) {
 
 function getMovementSpeed(interestingness) {
   if(interestingness === 0 || interestingness < 30) {
-    return Math.floor((Math.random() * (4500 - 3500)) + 3500);
+    return Math.floor((Math.random() * (4500 - 3500)) + 7500);
   }
   else if(interestingness > 30 || interestingness < 60) {
-    return Math.floor((Math.random() * (5500 - 5000)) + 5000);
+    return Math.floor((Math.random() * (5500 - 5000)) + 9000);
   }
   else if(interestingness > 60 || interestingness < 100) {
-    return Math.floor((Math.random() * (6500 - 5500)) + 5500);
+    return Math.floor((Math.random() * (6500 - 5500)) + 9500);
   }
   else {
-    return Math.floor((Math.random() * (7500 - 6000)) + 6000);
+    return Math.floor((Math.random() * (7500 - 6000)) + 10000);
   }
 }
 
