@@ -41,37 +41,37 @@ h2 {
   border-radius: 10px;
   font-weight: bold;
   opacity: 1;
-
+  box-shadow: 5px 5px 5px black;
 }
 
 .small {
-  height: 100px;
+  height: 150px;
   width: 150px;
-  background-color: purple;
+  background-color: black;
   text-align: center;
   z-index: 1;
 }
 
 .medium {
-  height: 125px;
+  height: 250px;
   width: 250px;
-  background-color: orange;
+  background-color: black;
   text-align: center;
   z-index: 2;
 }
 
 .large {
-  height: 175px;
-  width: 250px;
+  height: 300px;
+  width: 300px;
   background-color: green;
   text-align: center;
   z-index: 3;
 }
 
 .extra-large {
-  height: 250px;
+  height: 350px;
   width: 350px;
-  background-color: red;
+  background-color: black;
   text-align: center;
   z-index: 4;
 }
@@ -83,10 +83,7 @@ h2 {
   top: 0;
   left: 0;
   margin: 5%;
-  position: absolute;
   z-index: 10;
-  top: 10px;
-  left: 10px;
 }
 
 .tile-text {
