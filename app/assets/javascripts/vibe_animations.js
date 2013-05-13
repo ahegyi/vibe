@@ -30,8 +30,7 @@ function defaultMap(){
   };
   var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
   map.mapTypes.set(layer, new google.maps.StamenMapType(layer));
-  }
-
+}
 
 function Map(latitude, longitude){
   var center = new google.maps.LatLng(parseFloat(latitude), parseFloat(longitude));
@@ -51,21 +50,22 @@ function Map(latitude, longitude){
 window.onload = defaultMap;
 
 var allPixData;
-  function getPix(picArray){
-    allPixData = [];
-    for (var i = 0; i < picArray.length; i += 1){
-      var picLink = picArray[i]['media_url'];
-      var picInterestingness = picArray[i]['interestingness'];
-      var picSource = picArray[i]['source'];
-      var picUserData = picArray[i]['username'];
-      allPixData.push({
-        "link": picLink,
-        "interestingness": picInterestingness,
-        "source": picSource,
-        "username": picUserData
-      });
-    }
+
+function getPix(picArray){
+  allPixData = [];
+  for (var i = 0; i < picArray.length; i += 1){
+    var picLink = picArray[i]['media_url'];
+    var picInterestingness = picArray[i]['interestingness'];
+    var picSource = picArray[i]['source'];
+    var picUserData = picArray[i]['username'];
+    allPixData.push({
+      "link": picLink,
+      "interestingness": picInterestingness,
+      "source": picSource,
+      "username": picUserData
+    });
   }
+}
 
 var minTop = 50;
 var maxTop = $(window).height() - 300;
@@ -80,7 +80,6 @@ function Tile(interestingness, link, source, userName, leftStart) {
   this.interestingness = interestingness;
   this.topValue = getTopValue(Math.floor(Math.random() * 5) + 1);
   this.leftValue = leftStart;
-  //this.leftValue = getStartLeftValue(Math.floor(Math.random() * 4) + 1);
   tile.css({
     "top": this.topValue + 'px',
     "left": this.leftValue + 'px'
@@ -194,17 +193,17 @@ function getStartLeftValue(columnNum) {
 }
 
 function getMovementSpeed(interestingness) {
-  if(interestingness === 1) {
-    return Math.floor((Math.random() * (4000 - 3000)) + 3000);
+  if(interestingness === 0 || interestingness < 30) {
+    return Math.floor((Math.random() * (4500 - 3500)) + 3500);
   }
-  else if(interestingness === 2) {
-    return Math.floor((Math.random() * (4500 - 4000)) + 4000);
+  else if(interestingness > 30 || interestingness < 60) {
+    return Math.floor((Math.random() * (5500 - 5000)) + 5000);
   }
-  else if(interestingness === 3) {
-    return Math.floor((Math.random() * (5000 - 4500)) + 4500);
+  else if(interestingness > 60 || interestingness < 100) {
+    return Math.floor((Math.random() * (6500 - 5500)) + 5500);
   }
   else {
-    return Math.floor((Math.random() * (6000 - 4750)) + 4750);
+    return Math.floor((Math.random() * (7500 - 6000)) + 6000);
   }
 }
 
@@ -255,7 +254,7 @@ $(document).ready(function() {
         $.each(tiles, function(index, tile) {
           if(index < 10) {
             this.tile.show('scale');
-            tile.move(tile.leftValue + 100);
+            tile.move(tile.leftValue + 10);
           }
         });
 
