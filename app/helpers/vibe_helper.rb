@@ -7,7 +7,7 @@ module VibeHelper
 
   # lat and long arguments should be floats
   def foursquare_ll(lat, long)
-    fs_interestingness = 55
+    fs_interestingness = rand() * 60 + 20
 
     ll = [lat, long].join(",")
 
@@ -217,7 +217,7 @@ module VibeHelper
           entity.external_url = tweet["entities"]["media"].first["expanded_url"]
           entity.media_url = tweet["entities"]["media"].first["media_url"]
           # wild guess, for tweets with images
-          entity.interestingness = rand(20..50)
+          entity.interestingness = rand() * 30 + 20
         else
           entity.type = "text"
           entity.external_url = "https://twitter.com/" + tweet["from_user"] + "/status/" + tweet["id_str"] + "/"
