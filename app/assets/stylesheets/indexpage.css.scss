@@ -1,11 +1,11 @@
 
-html { 
-  height: 100%; 
+html {
+  height: 100%;
 }
 
-body { 
+body {
   margin: 0;
-  padding: 0; 
+  padding: 0;
 }
 
 .hidden {
@@ -30,7 +30,7 @@ body {
   float: top;
   margin-top: 5%;
   margin-left: 25%;
-  
+
   border: 5px solid black;
   background-color: white;
 
@@ -72,7 +72,7 @@ input {
   color: #790000;
   text-shadow: 0 0 0.01em #BF1616, 0 0 0.01em #BF1616,
         0 0 0.1em #BF1616;
-  box-shadow: 7px 7px 4px -2px #141414;
+  box-shadow: 0px 3px 4px -2px #141414;
 
   font-size: 300%;
   font-family: 'Josefin Slab', serif;
@@ -80,5 +80,8 @@ input {
 
   overflow: auto;
   text-align: center;
+
+  height: 100px;
+  padding-top: 20px;
 }
 

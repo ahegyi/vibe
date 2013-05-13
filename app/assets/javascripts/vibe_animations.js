@@ -254,7 +254,7 @@ $(document).ready(function() {
 
     $(nav).animate({
         width : '100%',
-        height : '20px',
+        height : '30px',
         fontSize : '120%',
         letterSpacing: '1em',
         marginTop : '0',
@@ -275,9 +275,9 @@ $(document).ready(function() {
     $(locationBox).animate({
       height: '40px',
       fontSize : '20px',
-      marginTop: '-57px',
+      marginTop: '-64px',
       marginLeft : '50%',
-      marginRight : '0%',
+      right : '10px',
       zIndex: '2'
       }, {
       duration: 550,
