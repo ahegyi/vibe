@@ -73,13 +73,13 @@ var minLeft = $(window).width() / 3;
 var maxLeft = $(window).width() - 500;
 
 //Prototype for tiles
-function Tile(interestingness, link, source, userName, leftStart) {
+function Tile(interestingness, link, source, userName) {
   var body = $('body');
   var tile = $('<div class="tile"><img src="' + link + '"></div>');
   this.tile = tile;
   this.interestingness = interestingness;
   this.topValue = getTopValue(Math.floor(Math.random() * 5) + 1);
-  this.leftValue = leftStart;
+  this.leftValue = ($(window).width() + 10);
   tile.css({
     "top": this.topValue + 'px',
     "left": this.leftValue + 'px'
@@ -101,11 +101,6 @@ function Tile(interestingness, link, source, userName, leftStart) {
     default:
       tile.addClass("medium");
   }
-
-  this.setNewLeft = function(left)  {
-    this.leftValue = left;
-    $(this).css({'left': left + 'px'});
-  };
 
   this.move = function(left) {
     this.tile.animate({
@@ -133,20 +128,14 @@ function generateTiles() {
     var link = allPixData[i].link;
     var source = allPixData[i].source;
     var userName = allPixData[i].username;
-    var leftStart;
-    if (i < 10) {
-      leftStart = getStartLeftValue(Math.floor(Math.random() * 4) + 1);
-    }
-    else {
-      leftStart = $(window).width() + 10;
-    }
+
     tiles.push(new Tile(interestingness, link, source, userName, leftStart));
   }
 }
 
 function launchNextTile(index) {
   var tile = tiles[index];
-  tile.setNewLeft(($(window).width() + 10));
+  // tile.setNewLeft(($(window).width() + 10));
   tile.tile.show();
   tile.move(($(window).width() + 10));
 
@@ -174,21 +163,6 @@ function getTopValue(rowNum) {
   }
   else {
     return Math.floor((Math.random() * ((maxTop - minTop) * 0.20)) + (minTop + ((maxTop - minTop) * 0.80)));
-  }
-}
-
-function getStartLeftValue(columnNum) {
-  if(columnNum === 1) {
-    return Math.floor((Math.random() * ((maxLeft - minLeft) * 0.25)) + minLeft);
-  }
-  else if(columnNum === 2) {
-    return Math.floor((Math.random() * ((maxLeft - minLeft) * 0.25)) + (minLeft + ((maxLeft - minTop) * 0.25)));
-  }
-  else if(columnNum === 3) {
-    return Math.floor((Math.random() * ((maxLeft - minLeft) * 0.25)) + (minLeft + ((maxLeft - minTop) * 0.50)));
-  }
-  else {
-    return Math.floor((Math.random() * ((maxLeft - minLeft) * 0.25)) + (minLeft + ((maxLeft - minTop) * 0.75)));
   }
 }
 
@@ -226,8 +200,6 @@ $(document).ready(function() {
       }
     });
 
-    // var searchVal = $('#searchbox').val();
-
     $.ajax({
       type: 'GET',
       url: '/geocode',
@@ -254,12 +226,9 @@ $(document).ready(function() {
         generateTiles();
         $('.tile').hide();
 
-        $.each(tiles, function(index, tile) {
-          if(index < 10) {
-            this.tile.show('scale');
-            tile.move(tile.leftValue + 10);
-          }
-        });
+        window.setInterval(function(){
+          launchNextTile(currentTileIndex);
+        }, 500);
 
         $('body').on('click', '.tile', function(event) {
           $('body').unbind('click');
@@ -273,10 +242,6 @@ $(document).ready(function() {
             tile.move(tile.currentLeft());
           });
         });
-
-        window.setInterval(function(){
-          launchNextTile(currentTileIndex);
-        }, 750);
       },
       error: function (textStatus) {
         console.log(textStatus);
@@ -315,9 +280,8 @@ $(document).ready(function() {
       specialEasing: {
       sarah : "0,0,1,1"
       },
-        complete: function(){
-          }
-        }
+      complete: function(){}
+      }
     );
 
     locationBox.css('position', 'absolute');
