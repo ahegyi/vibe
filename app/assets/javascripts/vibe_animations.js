@@ -51,7 +51,7 @@ var allPixData;
     }
   }
 
-var minTop = 30;
+var minTop = 50;
 var maxTop = $(window).height() - 300;
 var minLeft = $(window).width() / 3;
 var maxLeft = $(window).width() - 500;
@@ -126,6 +126,23 @@ function generateTiles() {
       leftStart = $(window).width() + 10;
     }
     tiles.push(new Tile(interestingness, link, source, userName, leftStart));
+  }
+}
+
+function launchNextTile(index) {
+  console.log(tiles);
+  console.log(index);
+
+  var tile = tiles[index];
+  tile.tile.show();
+  tile.setNewLeft($(window).width() + 10);
+  tile.move(($(window).width() + 10));
+
+  if(currentTileIndex === tiles.length - 1) {
+    _.shuffle(tiles);
+    currentTileIndex = 0;
+  }
+  else {
     currentTileIndex += 1;
   }
 }
@@ -178,62 +195,11 @@ function getMovementSpeed(interestingness) {
   }
 }
 
-var next;
-
 $(document).ready(function() {
 
   var locationBox = $('#searchbox');
   var nav = $('#sideNav');
   tiles = [];
-
-  // tiles.push(new Tile(1, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  // tiles.push(new Tile(50, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  // tiles.push(new Tile(34, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  // tiles.push(new Tile(23, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  // tiles.push(new Tile(80, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  // tiles.push(new Tile(45, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  // tiles.push(new Tile(56, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  // tiles.push(new Tile(50, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  // tiles.push(new Tile(34, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  // tiles.push(new Tile(43, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  // tiles.push(new Tile(67, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  // tiles.push(new Tile(50, $(window).width()));
-  // tiles.push(new Tile(72, $(window).width()));
-  // tiles.push(new Tile(25, $(window).width()));
-  // tiles.push(new Tile(56, $(window).width()));
-  // tiles.push(new Tile(57, $(window).width()));
-  // tiles.push(new Tile(23, $(window).width()));
-  // tiles.push(new Tile(13, $(window).width()));
-  // tiles.push(new Tile(8, $(window).width()));
-  // tiles.push(new Tile(20, $(window).width()));
-  // tiles.push(new Tile(45, $(window).width()));
-  // tiles.push(new Tile(50, $(window).width()));
-  // tiles.push(new Tile(34, $(window).width()));
-  // tiles.push(new Tile(73, $(window).width()));
-  // tiles.push(new Tile(80, $(window).width()));
-  // tiles.push(new Tile(74, $(window).width()));
-  // tiles.push(new Tile(14, $(window).width()));
-  // tiles.push(new Tile(57, $(window).width()));
-  // tiles.push(new Tile(23, $(window).width()));
-  // tiles.push(new Tile(56, $(window).width()));
-
-  next = function launchNextTile(index) {
-    var tile = tiles[index];
-    tile.tile.show();
-    tile.setNewLeft($(window).width() + 10);
-    tile.move(($(window).width() + 10));
-
-    if(currentTileIndex === tiles.length - 1) {
-      _.shuffle(tiles);
-      currentTileIndex = 0;
-    }
-    else {
-      currentTileIndex += 1;
-    }
-  };
-
-
-  $('.tile').hide();
 
   //Search bar animation
   $('form').submit( function(event) {
@@ -297,8 +263,8 @@ $(document).ready(function() {
           });
         });
 
-        setInterval(function(){
-          next(currentTileIndex);
+        window.setInterval(function(){
+          launchNextTile(currentTileIndex);
         }, 750);
 
       },
@@ -358,10 +324,6 @@ $(document).ready(function() {
     $('#map-canvas').css('opacity', '.5');
   });
 
-
-    // window.setInterval(function(){
-    //   launchNextTile(currentTileIndex);
-    // }, 2000);
 
     // $('body').on('click', '.tile', function(event) {
     //   $('body').unbind('click');
