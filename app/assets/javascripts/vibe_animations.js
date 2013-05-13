@@ -321,43 +321,12 @@ $(document).ready(function() {
       sarah : "0,0,1,1"
       },
         complete: function(){
-          // $.each(tiles, function(index, tile) {
-          //   if(index < 10) {
-          //     this.tile.show('scale');
-          //     tile.move(tile.leftValue + 100);
-          //     tile.setNewLeft($(window).width() + 10);
-          //   }
-          // });
           }
         }
     );
-    // setInterval(function(){
-    //   next(currentTileIndex);
-    // }, 750);
 
     locationBox.css('position', 'absolute');
     $('#vibe').css('textAlign', 'left');
     $('#map-canvas').css('opacity', '.5');
   });
-
-
-    // $('body').on('click', '.tile', function(event) {
-    //   $('body').unbind('click');
-    //   $('.tile').stop();
-    //   $(this).addClass('detail', 750);
-    //   // $(this).flip({
-    //   //   direction: 'rl',
-    //   //   content: '<p>Hello!</p>'
-    //   //   //onEnd: function() {
-    //   //     //$(this).addClass('detail', 1000);
-    //   //   //}
-    // });
-
-    // $(this).on('click', function() {
-    //   $(this).removeClass('detail', 750);
-    //   // $(this).revertFlip();
-    //   $.each(tiles, function(index, tile) {
-    //     tile.move(tile.currentLeft());
-    // });
-  //});
 });
