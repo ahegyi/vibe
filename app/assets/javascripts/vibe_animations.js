@@ -12,7 +12,7 @@ var random_places = {
   "Washington D.C.": [38.895107049000444, -77.03636627099968],
   "Boston": [42.358425544000454, -71.05976945499964],
   "Nassau": [25.058225872000435, -77.34305975299964]
-}
+};
 // Google Maps Initializer, by Sarah
 function defaultMap(){
   var random_place = _.shuffle(random_places);
@@ -53,7 +53,7 @@ window.onload = defaultMap;
 var allPixData;
   function getPix(picArray){
     allPixData = [];
-    for ( var i=0; i < picArray.length; i++ ){
+    for (var i = 0; i < picArray.length; i += 1){
       var picLink = picArray[i]['media_url'];
       var picInterestingness = picArray[i]['interestingness'];
       var picSource = picArray[i]['source'];
@@ -67,15 +67,15 @@ var allPixData;
     }
   }
 
-var minTop = 30;
+var minTop = 50;
 var maxTop = $(window).height() - 300;
 var minLeft = $(window).width() / 3;
 var maxLeft = $(window).width() - 500;
 
 //Prototype for tiles
-function Tile(interestingness, leftStart) {
+function Tile(interestingness, link, source, userName, leftStart) {
   var body = $('body');
-  var tile = $('<div class="tile"></div>');
+  var tile = $('<div class="tile"><img src="' + link + '"></div>');
   this.tile = tile;
   this.interestingness = interestingness;
   this.topValue = getTopValue(Math.floor(Math.random() * 5) + 1);
@@ -87,23 +87,28 @@ function Tile(interestingness, leftStart) {
   });
   this.currentLeft = function(){return parseInt(tile.css('left'), 10);};
   switch(interestingness) {
-    case 1:
+    case (interestingness === 0 || interestingness < 20):
       tile.addClass("small");
       break;
-    case 5:
+    case (interestingness > 20 || interestingness < 50):
       tile.addClass("medium");
       break;
-    case 50:
+    case (interestingness > 50 || interestingness < 70):
       tile.addClass("large");
       break;
-    case 100:
+    case (interestingness > 70 || interestingness <= 100):
       tile.addClass("extra-large");
       break;
     default:
       tile.addClass("medium");
   }
+
+  this.setNewLeft = function(left)  {
+    this.leftValue = left;
+    $(this).css({'left': left + 'px'});
+  };
+
   this.move = function(left) {
-    this.left = left;
     this.tile.animate({
       'left': '-=' + left + 'px'
       },
@@ -118,6 +123,41 @@ function Tile(interestingness, leftStart) {
   };
 
   body.append(tile);
+}
+
+var tiles;
+var currentTileIndex = 0;
+
+function generateTiles() {
+  for(var i = 0; i < allPixData.length; i += 1) {
+    var interestingness = allPixData[i].interestingness;
+    var link = allPixData[i].link;
+    var source = allPixData[i].source;
+    var userName = allPixData[i].username;
+    var leftStart;
+    if (i < 10) {
+      leftStart = getStartLeftValue(Math.floor(Math.random() * 4) + 1);
+    }
+    else {
+      leftStart = $(window).width() + 10;
+    }
+    tiles.push(new Tile(interestingness, link, source, userName, leftStart));
+  }
+}
+
+function launchNextTile(index) {
+  var tile = tiles[index];
+  tile.setNewLeft(($(window).width() + 10));
+  tile.tile.show();
+  tile.move(($(window).width() + 10));
+
+  if(currentTileIndex === tiles.length - 1) {
+    _.shuffle(tiles);
+    currentTileIndex = 0;
+  }
+  else {
+    currentTileIndex += 1;
+  }
 }
 
 function getTopValue(rowNum) {
@@ -168,65 +208,24 @@ function getMovementSpeed(interestingness) {
   }
 }
 
-var next;
-
 $(document).ready(function() {
 
   var locationBox = $('#searchbox');
   var nav = $('#sideNav');
-  var tiles = [];
-  var currentTileIndex = 10;
-
-  tiles.push(new Tile(1, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(50, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(1, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(5, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(100, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(5, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(1, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(50, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(5, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(5, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(1, getStartLeftValue(Math.floor(Math.random() * 4) + 1)));
-  tiles.push(new Tile(50, $(window).width()));
-  tiles.push(new Tile(1, $(window).width()));
-  tiles.push(new Tile(5, $(window).width()));
-  tiles.push(new Tile(100, $(window).width()));
-  tiles.push(new Tile(5, $(window).width()));
-  tiles.push(new Tile(1, $(window).width()));
-  tiles.push(new Tile(50, $(window).width()));
-  tiles.push(new Tile(5, $(window).width()));
-  tiles.push(new Tile(5, $(window).width()));
-  tiles.push(new Tile(1, $(window).width()));
-  tiles.push(new Tile(50, $(window).width()));
-  tiles.push(new Tile(1, $(window).width()));
-  tiles.push(new Tile(5, $(window).width()));
-  tiles.push(new Tile(100, $(window).width()));
-  tiles.push(new Tile(5, $(window).width()));
-  tiles.push(new Tile(1, $(window).width()));
-  tiles.push(new Tile(50, $(window).width()));
-  tiles.push(new Tile(5, $(window).width()));
-  tiles.push(new Tile(5, $(window).width()));
-
-  next = function launchNextTile(index) {
-    var tile = tiles[index];
-    tile.tile.show();
-    tile.move(($(window).width() + 10));
-
-    if(currentTileIndex === tiles.length - 1) {
-      _.shuffle(tiles);
-      currentTileIndex = 0;
-    }
-    else {
-      currentTileIndex += 1;
-    }
-  };
-
-  $('.tile').hide();
+  tiles = [];
 
   //Search bar animation
   $('form').submit( function(event) {
     event.preventDefault();
+
+    $.ajaxSetup({
+      beforeSend: function(){
+          $('.loader').show();
+      },
+      complete: function(){
+          $('.loader').hide();
+      }
+    });
 
     var searchVal = $('#searchbox').val();
 
@@ -253,10 +252,34 @@ $(document).ready(function() {
       success: function(data) {
         var picArray = data;
         getPix(picArray);
-        console.log(allPixData);
+        generateTiles();
+        $('.tile').hide();
+
+        $.each(tiles, function(index, tile) {
+          if(index < 10) {
+            this.tile.show('scale');
+            tile.move(tile.leftValue + 100);
+          }
+        });
+
+        $('body').on('click', '.tile', function(event) {
+          $('body').unbind('click');
+          $('.tile').stop();
+          $(this).addClass('detail', 750);
+        });
+
+        $(this).on('click', function() {
+          $(this).removeClass('detail', 750);
+          $.each(tiles, function(index, tile) {
+            tile.move(tile.currentLeft());
+          });
+        });
+
+        window.setInterval(function(){
+          launchNextTile(currentTileIndex);
+        }, 750);
       },
       error: function (textStatus) {
-        console.log("poop");
         console.log(textStatus);
       }
     });
@@ -294,48 +317,12 @@ $(document).ready(function() {
       sarah : "0,0,1,1"
       },
         complete: function(){
-          $.each(tiles, function(index, tile) {
-            if(index < 10) {
-              this.tile.show('scale');
-              tile.move(tile.leftValue + 100);
-              tile.leftValue = $(window).width();
-            }
-          });
-            currentTileIndex += 10;
           }
         }
     );
 
-    setInterval(function(){
-      next(currentTileIndex);
-    }, 750);
-
     locationBox.css('position', 'absolute');
     $('#vibe').css('textAlign', 'left');
     $('#map-canvas').css('opacity', '.5');
-  });
-
-    // window.setInterval(function(){
-    //   launchNextTile(currentTileIndex);
-    // }, 2000);
-
-    $('body').on('click', '.tile', function(event) {
-      $('body').unbind('click');
-      $('.tile').stop();
-      $(this).addClass('detail', 750);
-      // $(this).flip({
-      //   direction: 'rl',
-      //   content: '<p>Hello!</p>'
-      //   //onEnd: function() {
-      //     //$(this).addClass('detail', 1000);
-      //   //}
-    });
-
-    $(this).on('click', function() {
-      $(this).removeClass('detail', 500);
-      // $(this).revertFlip();
-      $.each(tiles, function(index, tile) {
-        tile.move(tile.currentLeft());
-    });
   });
 });
