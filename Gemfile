@@ -11,6 +11,7 @@ gem 'geocoder'
 gem 'foursquare2'
 gem 'instagram'
 gem 'flickraw'
+gem 'airbrake'
 
 
 group :development do
