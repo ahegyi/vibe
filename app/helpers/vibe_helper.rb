@@ -22,10 +22,10 @@ module VibeHelper
 
     if true
       client_options.merge!(:ssl => {:verify  => OpenSSL::SSL::VERIFY_PEER, :ca_file => '/usr/local/opt/curl-ca-bundle/share/ca-bundle.crt'})
-    else 
+    else
       client_options.merge!(:ssl => {:verify  => OpenSSL::SSL::VERIFY_NONE})
     end
-    
+
     client = Foursquare2::Client.new(client_options)
 
     venues  = client.trending_venues(ll, {:limit => 10, :radius => 5000}).venues
@@ -162,7 +162,7 @@ module VibeHelper
 
     begin
       result = open(twitter_search_uri + twitter_search_options)
-    rescue e
+    rescue Exception => e
       puts e.message
       return entities
     end
